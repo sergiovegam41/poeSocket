@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+
+#body{
+margin: 0;
+padding: 0;
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: antiquewhite; */
+  
+}
+
+*{
+    font-family: 'Ubuntu', sans-serif;
+    /* font-weight: 300; */
+}
+
+h1{
+    color: rgba(0,0,0,0.78);
+    font-weight: 400;
+}
+
+
+#form{
+
+    width: 50%;
+    /* background-color: red; */
+    height: 80vh;
+    display: flex;    
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* background-color: rebeccapurple; */
+
+}
+
+#IA{
+    height: 50vh;
+    overflow-y: auto;
+    /* background-color: red; */
+    margin: 20px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    padding: 20px;
+    transition: .25s;
+    text-align: center;
+    margin-top: 0;
+}
+
+#form input{
+
+    width: 89%;
+    resize: none;
+    /* height: 50px; */
+    border-radius: 10px;
+    /* padding: 10px; */
+    /* padding-left: 20px; */
+    outline: none;
+    border:  none ;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    margin: 0;
+    padding: 20px;
+    padding-left: 20px
+
+}
+
+
+
+
+
+
+
+.lds-grid {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-grid div {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: black;
+    animation: lds-grid 1.2s linear infinite;
+  }
+  .lds-grid div:nth-child(1) {
+    top: 8px;
+    left: 8px;
+    animation-delay: 0s;
+  }
+  .lds-grid div:nth-child(2) {
+    top: 8px;
+    left: 32px;
+    animation-delay: -0.4s;
+  }
+  .lds-grid div:nth-child(3) {
+    top: 8px;
+    left: 56px;
+    animation-delay: -0.8s;
+  }
+  .lds-grid div:nth-child(4) {
+    top: 32px;
+    left: 8px;
+    animation-delay: -0.4s;
+  }
+  .lds-grid div:nth-child(5) {
+    top: 32px;
+    left: 32px;
+    animation-delay: -0.8s;
+  }
+  .lds-grid div:nth-child(6) {
+    top: 32px;
+    left: 56px;
+    animation-delay: -1.2s;
+  }
+  .lds-grid div:nth-child(7) {
+    top: 56px;
+    left: 8px;
+    animation-delay: -0.8s;
+  }
+  .lds-grid div:nth-child(8) {
+    top: 56px;
+    left: 32px;
+    animation-delay: -1.2s;
+  }
+  .lds-grid div:nth-child(9) {
+    top: 56px;
+    left: 56px;
+    animation-delay: -1.6s;
+  }
+  @keyframes lds-grid {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  
+
+
+
+
+
+
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: gray white;
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: #FFF;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 20px;
+    border: 3px solid #FFF;
+  }
+
+
+
+
+
+
+
+  .loader {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: block;
+  margin:15px auto;
+  position: relative;
+  background: whitesmoke;
+  box-shadow: -24px 0 whitesmoke, 24px 0 whitesmoke;
+  box-sizing: border-box;
+  animation: shadowPulse 2s linear infinite;
+  box-shadow: 0 0 1px rgba(0,0,0,0.1);
+  transform: scale(.6);
+
+}
+
+@keyframes shadowPulse {
+  33% {
+    background: whitesmoke;
+    box-shadow: -24px 0 black, 24px 0 whitesmoke;
+  }
+  66% {
+    background: black;
+    box-shadow: -24px 0 whitesmoke, 24px 0 whitesmoke;
+  }
+  100% {
+    background: whitesmoke;
+    box-shadow: -24px 0 whitesmoke, 24px 0 black;
+  }
+}
+
+
+
+.slogans {
+  position: relative;
+  height: 25px;
+  width: 100%;
+  margin: 20px;
+  /* background: red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slogan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+/* background-color: bisque; */
+  text-align: center;
+}
+
+.slogan:nth-child(1) {
+  animation: fadeInOut 2.2s ease-in-out;
+}
+
+.slogan:nth-child(2) {
+  animation: fadeInOut 2s ease-in-out;
+  animation-delay: 4s;
+}
+
+.slogan:nth-child(3) {
+  animation: fadeInOut 1.7s ease-in-out;
+  animation-delay: 6.5s;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
