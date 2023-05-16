@@ -28,9 +28,10 @@ img{
 }
 #form{
 
-    width: 50%;
+    width: 80%;
+    max-width: 800px;
     /* background-color: red; */
-    height: 80vh;
+    /* height: 80vh; */
     display: flex;    
     flex-direction: column;
     justify-content: center;
@@ -40,14 +41,17 @@ img{
 }
 
 #IA{
-  margin-top: 10px;
-  background: linear-gradient(rgba(0,0,0,.025), transparent,transparent);
-  /* height: auto; */
+  margin-top: 0px;
+  background: linear-gradient(rgba(0,0,0,.03), transparent,transparent);
+  /* height: 60vh; */
+  
    overflow-y: auto;
     /* background-color: red; */
     /* margin: 20px; */
+    padding: 20px;
     width: 87%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     /* align-items: center; */
     padding: 20px;
@@ -55,6 +59,8 @@ img{
     text-align: center;
     margin-top: 0;
     padding-top: 0px;
+    padding: 20px;
+    padding-bottom: 50px;
 }
 
 #form input{
@@ -72,6 +78,7 @@ img{
   padding: 20px;
   padding-left: 20px;
   cursor:  auto 30px;
+  text-align: center;
 
 }
 
@@ -199,96 +206,44 @@ img{
   @keyframes shadowPulse {
     33% {
       background: rgba(216, 216, 216,.1);
-      box-shadow: -24px 0 white, 24px 0 rgba(216, 216, 216,.1);
+      box-shadow: -24px 0 gray, 24px 0 rgba(216, 216, 216,.1);
     }
     66% {
-      background: white;
+      background: gray;
       box-shadow: -24px 0 rgba(216, 216, 216), 24px 0 rgba(216, 216, 216,.1);
     }
     100% {
       background: rgba(216, 216, 216,.1);
-      box-shadow: -24px 0 rgba(216, 216, 216,.1), 24px 0 white;
+      box-shadow: -24px 0 rgba(216, 216, 216,.1), 24px 0 gray;
     }
   }
-
-
-
-.slogans {
-  position: relative;
-  height: 25px;
-  width: 100%;
-  margin: 20px;
-  /* background: red; */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.slogan {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  width: 100%;
-/* background-color: bisque; */
-  text-align: center;
-}
-
-.slogan:nth-child(1) {
-  animation: fadeInOut 2.2s ease-in-out;
-}
-
-.slogan:nth-child(2) {
-  animation: fadeInOut 2s ease-in-out;
-  animation-delay: 4s;
-}
-
-.slogan:nth-child(3) {
-  animation: fadeInOut 1.7s ease-in-out;
-  animation-delay: 6.5s;
-}
-
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-
-
-
 
 .vanilla{
   /* width: 200px; */
   /* height: 50px; */
-  background:  #fd8419;
+  /* background:  #fd8419; */
+  border: solid 2px rgba(0,0,0,.03);
   transform-style: preserve-3d;
   transform: perspective(1000px);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 30px;
+  margin: 20px;
   margin-left: 0;
   margin-right: 0;
   border-radius:  10px;
-  padding: 20px;
+  /* padding-b: 20px; */
+  margin: 10px;
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 0;
   padding-bottom: 0;
+  border-bottom: solid 2px grey;
+
   /* margin: 10PX; */
 
-  background: linear-gradient(315deg, #ffec61,#f321d7);
+  /* background: linear-gradient(315deg, #ffec61,#f321d7); */
+  z-index: 5;
 }
 .vanilla::before{
   content: '';
@@ -297,7 +252,43 @@ img{
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(315deg, #ffec61,#f321d7);
+    /* background: linear-gradient(315deg, #ffec61,#f321d7); */
+    filter: blur(25px);
+    border-radius: 30px;
+    transform: translateY(10px) scale(.9);
+    z-index: 1;
+
+  
+}
+
+.vanilla p{
+  z-index: 3000;
+  transform: translateZ(30px);
+  color: black;
+  
+}
+
+.human{
+  /* background: linear-gradient(315deg, #f321d7,#ffec61); */
+  /* background: #fd8419; */
+  z-index: 5;
+  border: solid 2px rgba(0,0,0,.03);  /* color: black; */
+
+
+}
+
+.human p{
+  /* color: black; */
+}
+
+.human::before{
+  content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: linear-gradient(315deg, #f321d7,#ffec61); */
     filter: blur(25px);
     border-radius: 30px;
     transform: translateY(10px) scale(.9);
@@ -305,8 +296,25 @@ img{
   
 }
 
-.vanilla p{
-  transform: translateZ(10px);
-  color: white;
-  
-}
+
+
+
+.load {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #FFF;
+  border-bottom-color: rgba(0,0,0,.1);
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+  } 

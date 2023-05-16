@@ -213,16 +213,13 @@ async function test() {
     io.on('connection', async ( socket ) => { 
 
 
-        bot = "a2";
+        bot = "botego";
         console.log("new conection")
+        token = "QUTb7C8INEScs82y8QL3hA%3D%3D"
 
         var clientPoe = new poe.Client();
 
-        try {
-            await clientPoe.init("6VzV9ChTQQelVJtsBJIJSg%3D%3D");
-        } catch (error) {
-            socket.emit("server:init",{success:false})
-        }
+        await clientPoe.init(token, null, null, bot);
         let botsAny = clientPoe.bots
 
         await clientPoe.purge_conversation(bot, -1);
@@ -236,40 +233,45 @@ async function test() {
         socket.on('client:send',  async ( data ) => {
             console.log("on message")
             
-            var clientPoe = new poe.Client();
             try {
-                await clientPoe.init("6VzV9ChTQQelVJtsBJIJSg%3D%3D",null,botsAny);
+                var clientPoe = new poe.Client();
+
+                
+                await clientPoe.init(token,null,botsAny);
+
+                console.log("instans created")
+        
+
+                let reply;
+                let init = true;
+                for await (const mes of clientPoe.send_message(bot, data.message)) {
+                    
+    
+                    let data = {
+                        id: mes.id,
+                        message: mes.text
+                    }
+                    if(init){ 
+                       await socket.emit("server:newMessage",data)
+                       init=false
+                    }else{
+                       await socket.emit(`server:newMessage:${mes.id}`,data)
+                    }
+    
+                    console.log("###")
+                    console.log(mes.id)
+                    console.log("----")
+                    console.log(mes.text)
+                    console.log("###")
+                    reply = mes.text;
+                }
+        
+                return reply
+
             } catch (error) {
                 socket.emit("server:init",{success:false})
             }
-            console.log("instans created")
-        
-
-            let reply;
-            let init = true;
-            for await (const mes of clientPoe.send_message(bot, data.message)) {
-                
-
-                let data = {
-                    id: mes.id,
-                    message: mes.text
-                }
-                if(init){ 
-                   await socket.emit("server:newMessage",data)
-                   init=false
-                }else{
-                   await socket.emit(`server:newMessage:${mes.id}`,data)
-                }
-
-                console.log("###")
-                console.log(mes.id)
-                console.log("----")
-                console.log(mes.text)
-                console.log("###")
-                reply = mes.text;
-            }
-    
-            return reply
+           
     
         })
         

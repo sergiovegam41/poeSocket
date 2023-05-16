@@ -242,7 +242,7 @@ class Client {
         this.use_cached_bots = use_cached_bots;
     }
 
-    async init(token, proxy = null,  bot) {
+    async init(token, proxy = null,  bot = null, fast) {
         this.proxy = proxy;
         this.session = axios.default.create({
             timeout: 60000,
@@ -268,7 +268,7 @@ class Client {
         // console.log("next_data")
         this.channel = await this.get_channel_data();
         // console.log("channel")
-        this.bots = bot != null? bot : await this.get_bots(true);
+        this.bots = bot != null? bot : await this.get_bots(fast);
         this.bot_names = this.get_bot_names();
         this.ws_domain = `tch${Math.floor(Math.random() * 1e6)}`;
         this.gql_headers = {
@@ -297,7 +297,7 @@ class Client {
         return nextData;
     }
 
-    async get_bots( fast = false) {
+    async get_bots( fast = null) {
         const viewer = this.next_data.props.pageProps.payload.viewer;
         if (!viewer.availableBots) {
             throw new Error('Invalid token.');
@@ -305,7 +305,7 @@ class Client {
         const botList = viewer.availableBots;
 
         const bots = {};
-        for (const bot of botList.filter(x => x.nickname == 'a2')) {
+        for (const bot of botList.filter(fast ==null? x.deletionState == 'not_deleted' :x => x.nickname == fast)) {
 
             // console.log(bot)
             const url = `https://poe.com/_next/data/${this.next_data.buildId}/${bot.displayName}.json`;
@@ -323,7 +323,7 @@ class Client {
             const chatData = r.data.pageProps.payload.chatOfBotDisplayName;
             bots[chatData.defaultBotObject.nickname] = chatData;
 
-            if(fast)break
+            if(fast != null)break
             
         }
 
