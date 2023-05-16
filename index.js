@@ -1,3 +1,4 @@
+// var botsdata = 
 const poe = require('./poe-client');
 require('dotenv').config()
 const { MongoClient, ServerApiVersion } = require('mongodb');
@@ -6,8 +7,6 @@ const express = require('express')
 const app = express()
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-
-
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -214,19 +213,21 @@ async function test() {
     io.on('connection', async ( socket ) => { 
 
 
-        bot = "botego";
+        bot = "a2";
         console.log("new conection")
 
-        
         var clientPoe = new poe.Client();
+
         try {
-            await clientPoe.init("QUTb7C8INEScs82y8QL3hA%3D%3D");
+            await clientPoe.init("6VzV9ChTQQelVJtsBJIJSg%3D%3D");
         } catch (error) {
             socket.emit("server:init",{success:false})
         }
-        console.log("instans created")
-     
+        let botsAny = clientPoe.bots
+
         await clientPoe.purge_conversation(bot, -1);
+        console.log("instans created")
+
 
         socket.emit("server:init",{success:true})
 
@@ -235,7 +236,14 @@ async function test() {
         socket.on('client:send',  async ( data ) => {
             console.log("on message")
             
-            
+            var clientPoe = new poe.Client();
+            try {
+                await clientPoe.init("6VzV9ChTQQelVJtsBJIJSg%3D%3D",null,botsAny);
+            } catch (error) {
+                socket.emit("server:init",{success:false})
+            }
+            console.log("instans created")
+        
 
             let reply;
             let init = true;

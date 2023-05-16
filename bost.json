@@ -1,0 +1,63 @@
+{
+    "a2": {
+        "defaultBotObject": {
+            "displayName": "Claude-instant",
+            "id": "Qm90OjEwMDY=",
+            "nickname": "a2",
+            "hasWelcomeTopics": true,
+            "deletionState": "not_deleted",
+            "image": {
+                "__typename": "LocalBotImage",
+                "localName": "Avatar_Placeholder_Orange"
+            },
+            "__isNode": "Bot",
+            "creator": {
+                "profilePhotoUrl": "https://qph.cf2.quoracdn.net/main-thumb-2187163946-50-rlxebmbvdcdfyezxboaarziszfnllwsh.jpeg",
+                "fullName": "Poe",
+                "handle": "poe",
+                "__isNode": "PoeUser",
+                "id": "UG9lVXNlcjoyMTg3MTYzOTQ2"
+            },
+            "description": "Anthropic’s fastest model, with strength in creative tasks. Features a context window of 9k tokens (around 7,000 words).",
+            "poweredBy": "This bot is powered by Anthropic.",
+            "messageLimit": {
+                "numMessagesRemaining": null,
+                "dailyLimit": null,
+                "shouldShowRemainingMessageCount": false,
+                "resetTime": 1684281600000000,
+                "dailyBalance": null
+            },
+            "hasSuggestedReplies": true,
+            "disclaimerText": "This bot may make incorrect statements. It does not have knowledge of events after 2021. ",
+            "isApiBot": false,
+            "isPrivateBot": false,
+            "contextClearWindowSecs": 1800,
+            "introduction": "",
+            "model": "a2",
+            "isSystemBot": true,
+            "viewerIsCreator": false,
+            "hasClearContext": true,
+            "isDown": false,
+            "isLimitedAccess": false,
+            "handle": "Claude-instant",
+            "viewerIsFollower": false,
+            "isPromptPublic": false,
+            "promptPlaintext": "",
+            "botId": 1006,
+            "followerCount": 5068
+        },
+        "id": "Q2hhdDoxNzM5MzUyMA==",
+        "chatId": 17393520,
+        "shouldShowDisclaimer": true,
+        "defaultBotNickname": "a2",
+        "__isNode": "Chat",
+        "messagesConnection": {
+            "edges": [],
+            "pageInfo": {
+                "hasPreviousPage": false,
+                "startCursor": null
+            },
+            "id": "17393520"
+        }
+    }
+}
