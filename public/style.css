@@ -79,7 +79,20 @@ img{
   padding-left: 20px;
   cursor:  auto 30px;
   text-align: center;
+  color: black;
+  font-size: 16px;
+  font-family: 'Ubuntu', sans-serif;
+  border-width: 3px;
 
+  font-family: 600;
+
+}
+
+
+#form input {
+  /* border-width: 10px; */
+  caret-color: orange;
+  
 }
 
 
