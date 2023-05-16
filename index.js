@@ -258,13 +258,15 @@ async function test() {
                        await socket.emit(`server:newMessage:${mes.id}`,data)
                     }
     
-                    console.log("###")
-                    console.log(mes.id)
-                    console.log("----")
-                    console.log(mes.text)
-                    console.log("###")
-                    reply = mes.text;
+                    // console.log("###")
+                    // console.log(mes.id)
+                    // console.log("----")
+                    // console.log(mes.text)
+                    // console.log("###")
+                    // reply = mes.text;
                 }
+
+                await socket.emit(`server:endMessage`,reply)
         
                 return reply
 

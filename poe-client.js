@@ -1,3 +1,4 @@
+
 const WebSocket = require('ws');
 const axios = require('axios');
 const fs = require('fs');
@@ -204,6 +205,8 @@ function generate_payload(query, variables) {
 }
 
 async function request_with_retries(method, attempts = 10) {
+
+   
     const url = '';
     for (let i = 0; i < attempts; i++) {
         try {
@@ -240,9 +243,16 @@ class Client {
     constructor(auto_reconnect = false, use_cached_bots = false) {
         this.auto_reconnect = auto_reconnect;
         this.use_cached_bots = use_cached_bots;
+        console.log("constructor.")
+    // const files = fs.readdirSync(__dirname+"\\nexdata.json");
+
+
     }
 
     async init(token, proxy = null,  bot = null, fast) {
+
+        console.log("init.")
+        
         this.proxy = proxy;
         this.session = axios.default.create({
             timeout: 60000,
@@ -263,36 +273,49 @@ class Client {
             "Origin": "https://poe.com",
             "Cookie": cookies,
         };
+        console.log("config.")
         this.session.defaults.headers.common = this.headers;
         this.next_data = await this.get_next_data();
-        // console.log("next_data")
+        console.log("next_data")
         this.channel = await this.get_channel_data();
-        // console.log("channel")
+        console.log("channel")
         this.bots = bot != null? bot : await this.get_bots(fast);
+        console.log("get_bots")
         this.bot_names = this.get_bot_names();
+        console.log("get_bot_names")
         this.ws_domain = `tch${Math.floor(Math.random() * 1e6)}`;
         this.gql_headers = {
             "poe-formkey": this.formkey,
             "poe-tchannel": this.channel["channel"],
             ...this.headers,
         };
-        // console.log("ws_domain")
+        console.log("ws_domain")
         await this.connect_ws();
-        // console.log("connect_ws")
+        console.log("connect_ws")
         await this.subscribe();
-        // console.log("subscribe")
+        console.log("subscribe")
     }
 
     async get_next_data() {
         // logger.info('Downloading next_data...');
+        // console.log(this.home_url)
 
         const r = await request_with_retries(() => this.session.get(this.home_url));
         const jsonRegex = /<script id="__NEXT_DATA__" type="application\/json">(.+?)<\/script>/;
         const jsonText = jsonRegex.exec(r.data)[1];
         const nextData = JSON.parse(jsonText);
+        // const r = dstatic
+
 
         this.formkey = extractFormKey(r.data);
         this.viewer = nextData.props.pageProps.payload.viewer;
+
+        // // console.log(nextData)
+
+        // fs.writeFile("nexdata.json", JSON.stringify(nextData), (err) => {
+        //     if (err) throw err;
+        //     console.log('File saved!');
+        // });
 
         return nextData;
     }
@@ -303,7 +326,8 @@ class Client {
             throw new Error('Invalid token.');
         }
         const botList = viewer.availableBots;
-
+        
+        // console.log(botList)
         const bots = {};
         for (const bot of botList.filter(fast ==null? x.deletionState == 'not_deleted' :x => x.nickname == fast)) {
 
@@ -341,6 +365,8 @@ class Client {
 
     async get_channel_data(channel = null) {
         // logger.info('Downloading channel data...');
+
+        console.log(this.settings_url)
         const r = await request_with_retries(() => this.session.get(this.settings_url));
         const data = r.data;
 
@@ -629,4 +655,30 @@ class Client {
 
 load_queries();
 
+
 module.exports = { Client };
+
+// (async () => {
+
+
+//     console.log("eject.")
+//     var clientPoe = new Client();
+//     await clientPoe.init("QUTb7C8INEScs82y8QL3hA%3D%3D",null,null,"a2");
+//     console.log("instacia creada.")
+//     let reply;
+//     // for await (const mes of clientPoe.send_message("a2", "Hola")) {
+//     //     let data = {
+//     //         id: mes.id,
+//     //         message: mes.text
+//     //     }
+//     //     console.log("###")
+//     //     console.log(mes.id)
+//     //     console.log("----")
+//     //     console.log(mes.text)
+//     //     console.log("###")
+//     //     reply = mes.text;
+//     // }
+
+//     console.log("Fin.")
+    
+// })()
