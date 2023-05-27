@@ -1,7 +1,7 @@
 // var botsdata = 
 const poe = require('./poe-client');
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+// const { MongoClient, ServerApiVersion } = require('mongodb');
 const ObjectID = require('mongodb').ObjectID;
 const express = require('express')
 const app = express()
@@ -32,14 +32,44 @@ app.use(cors(corsOptions));
 const port = process.env.PORT || 3000
 const TOKEN_POE = process.env.POE_TOKEN
 
-test();
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const DATABASE = process.env.MONGO_DATABASE || "Bots"
+const uriMongo = process.env.MONGO_URI;
+const Mongoclient = new MongoClient(uriMongo, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+var ApisPoeClientAvailableCollection = null
+var poeTokensAvailableCollection = null
+var UsersCollection = null
+var DefaultsProntsCollection = null
+
+Mongoclient.connect(async err => {
+
+    ApisPoeClientAvailableCollection = Mongoclient.db(DATABASE).collection("ApisPoeClientAvailable");
+    poeTokensAvailableCollection = Mongoclient.db(DATABASE).collection("poeTokensAvailable");
+    UsersCollection = Mongoclient.db(DATABASE).collection("IAUsers");
+    DefaultsProntsCollection = Mongoclient.db(DATABASE).collection("DefaultsPronts");
+  
+    if (err) { console.log(err) } else {
+      this.ready = true
+    }
+  
+    console.log("Mongo Conectado a: " + DATABASE);
+    test();
+
+  
+    // const server = app.listen(port, () => {
+  
+    //   console.log(`La aplicación está corriendo en el puerto: ${port}`);
+    //   // console.log(`Api ready.`)
+    // })
+  
+  });
+
 
 async function test() {
 
     app.get('/ping', async function(req, res) {
         res.send(true)    
     })
-
 
     app.post('/get-history', async function(req, res) {
 
@@ -196,87 +226,96 @@ async function test() {
                 }
             })
 
-       } catch (error) {
+        } catch (error) {
 
-        console.log(error)
+            console.log(error)
             client.disconnect_ws()
             return res.send({
-                    success:false,
-                    message: error,
+                success:false,
+                message: error,
             })
             
-       }
+        }
       
     });
 
     //`socket`
     io.on('connection', async ( socket ) => { 
 
-
-        bot = "botego";
+        let bot = "a2";
         console.log("new conection")
-        token = "QUTb7C8INEScs82y8QL3hA%3D%3D"
+    //    let token = "7wI28WkgKYcH5F4L7R5rNA%3D%3D"
+       let token = await getTokenPoe()
 
         var clientPoe = new poe.Client();
 
-        await clientPoe.init(token, null, null, bot);
-        let botsAny = clientPoe.bots
+        await clientPoe.init(token,null,null, bot);
+        // let botsAny = clientPoe.bots;
 
         await clientPoe.purge_conversation(bot, -1);
-        console.log("instans created")
-
+        console.log("[INSTANCE_CREATED]");        
 
         socket.emit("server:init",{success:true})
 
 
 
         socket.on('client:send',  async ( data ) => {
-            console.log("on message")
-            
+            console.log("[TEXT]: "+data.message)
+
             try {
                 var clientPoe = new poe.Client();
+                await clientPoe.init(token,null,null, bot);
 
-                
-                await clientPoe.init(token,null,botsAny);
-
-                console.log("instans created")
-        
 
                 let reply;
                 let init = true;
+
                 for await (const mes of clientPoe.send_message(bot, data.message)) {
                     
-    
                     let data = {
+                        
                         id: mes.id,
                         message: mes.text
+
                     }
+
                     if(init){ 
+                
                        await socket.emit("server:newMessage",data)
                        init=false
+                
                     }else{
-                       await socket.emit(`server:newMessage:${mes.id}`,data)
+                
+                        await socket.emit(`server:newMessage:${mes.id}`,data)
+                
                     }
-    
-                    // console.log("###")
-                    // console.log(mes.id)
-                    // console.log("----")
-                    // console.log(mes.text)
-                    // console.log("###")
-                    // reply = mes.text;
+
+                    reply = mes.text.trim()
+
                 }
 
                 await socket.emit(`server:endMessage`,reply)
-        
+
+                console.log("[RESPONSE]: "+reply)
                 return reply
 
-            } catch (error) {
+
+            } catch (error) {   
+                
+                console.log(error)
                 socket.emit("server:init",{success:false})
+
             }
            
-    
         })
+
         
+        socket.on('disconnect',async () => {
+
+            await setTokenPoe(token)
+            console.log('Client disconnected');
+            // Realizar acciones adicionales si es necesario
+        });
 
     });
 
@@ -285,13 +324,8 @@ async function test() {
 
         console.log(`La aplicación está corriendo en el puerto: ${port}`);
 
-        
-
-    });
-
-    
+    });   
 }
-
 
 async function hasAuthority(token){
     let token_acces = '1224'
@@ -302,70 +336,19 @@ async function hasAuthority(token){
 
 
 
-async function sendToApi(host, body, action = 'send') {
-    // console.log("Run sendMessageToApi")
-    // console.log(body)
-    try {
-      const response = await axios.post(`${host}/${action}`, body);
-      // console.log(response.data)
-  
-      return response.data;
-  
-    } catch (error) {
-      throw error;
-    }
-  }
-  
-  async function selectRamDomHostAvailable() {
-    const activeHosts = await ApisPoeClientAvailableCollection.find({ active: true }).toArray();
-    const randomHost = activeHosts[Math.floor(Math.random() * activeHosts.length)];
-    return randomHost;
-  }
-  
-  
-  async function pingToPoeClients() {
-    const activeHosts = await ApisPoeClientAvailableCollection.find({ active: true }).toArray();
-  
-    for (let host of activeHosts) {
-      try {
-        let resp = await axios.get(`${host.host}/ping`);
-        console.log(resp.data);
-      } catch (error) {
-        console.log(false);
-      }
-    }
-  
-    return true;
-  }
-  
-  async function searchOrCreateUserByPhone(phone) {
-    const user = await UsersCollection.findOne({ phone });
-    if (!user) {
-      const newUser = {
-        phone,
-        poeToken: await getTokenPoe()
-      };
-      await UsersCollection.insertOne(newUser);
-      return await UsersCollection.findOne({ phone });
-    }
-    return user;
-  }
-  
-  async function getTokenPoe() {
+
+async function getTokenPoe() {
     let token = await poeTokensAvailableCollection.findOne();
-    console.log(token.token)
+    console.log(`[TOKEN_TAKEN]: ${token.token}`)
     await poeTokensAvailableCollection.deleteOne({ _id: token._id });
     return token.token;
-  }
+}
+
+async function setTokenPoe(token) {
+    // console.log(token)
+    console.log(`[TOKEN_RETURNED]: ${token}`)
+    await poeTokensAvailableCollection.insertOne({ token: token});
+    return token;
+}
   
-   function getMinutesSinceLastTime (lastTime) {
-    const now = new Date();
-    if (!lastTime) {
-      lastTime = now;
-      return 0;
-    } else {
-      const diff = (now - lastTime) / 1000 / 60;
-      lastTime = now;
-      return Math.floor(diff);
-    }
-  }
+

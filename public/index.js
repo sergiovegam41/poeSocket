@@ -1,19 +1,19 @@
 const socket = io()
 
 window.addEventListener("DOMContentLoaded", (event) => {
-   
+    
+console.log("Sieee")
 
 socket.on('server:init',(data)=>{
-    console.log(data.success)
     console.log("init data")
-
+    console.log(data.success)
+    
+    console.log("Sieee")
    if(data.success){
-
 
     document.getElementById("body").innerHTML = `
 
     <div id="form">
-
         
         <h1>Anthropic</h1>
 
@@ -21,20 +21,15 @@ socket.on('server:init',(data)=>{
         
         <div id="IA" >
 
-
             <div class="vanilla n-e-wnew-n-e-w" >
-                <p id="IAResponse" class="IAResponse">Escribe algo para empezar 😁</p>
-            </div>
 
+                <p id="IAResponse" class="IAResponse">Escribe algo para empezar 😁</p>
+            
+            </div>
             
         </div>
-
-
-
-
         
     </div>
-
 
     `;
 

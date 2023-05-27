@@ -243,57 +243,64 @@ class Client {
     constructor(auto_reconnect = false, use_cached_bots = false) {
         this.auto_reconnect = auto_reconnect;
         this.use_cached_bots = use_cached_bots;
-        console.log("constructor.")
+        // console.log("constructor.")
     // const files = fs.readdirSync(__dirname+"\\nexdata.json");
 
 
     }
 
-    async init(token, proxy = null,  bot = null, fast) {
+    async  init( token, proxy = null,  bot = null, fast ) {
 
-        console.log("init.")
+        // console.log("init.");
         
         this.proxy = proxy;
+
         this.session = axios.default.create({
             timeout: 60000,
             httpAgent: new http.Agent({ keepAlive: true }),
             httpsAgent: new https.Agent({ keepAlive: true }),
         });
+
         if (proxy) {
+
             this.session.defaults.proxy = {
                 "http": proxy,
                 "https": proxy,
             };
             // logger.info(`Proxy enabled: ${proxy}`);
+        
         }
+        
         const cookies = `p-b=${token}; Domain=poe.com`;
+        
         this.headers = {
             "User-Agent": user_agent,
             "Referrer": "https://poe.com/",
             "Origin": "https://poe.com",
             "Cookie": cookies,
         };
-        console.log("config.")
+
+        // console.log("config.")
         this.session.defaults.headers.common = this.headers;
         this.next_data = await this.get_next_data();
-        console.log("next_data")
+        // console.log("next_data")
         this.channel = await this.get_channel_data();
-        console.log("channel")
+        // console.log("channel")
         this.bots = bot != null? bot : await this.get_bots(fast);
-        console.log("get_bots")
+        // console.log("get_bots")
         this.bot_names = this.get_bot_names();
-        console.log("get_bot_names")
+        // console.log("get_bot_names")
         this.ws_domain = `tch${Math.floor(Math.random() * 1e6)}`;
         this.gql_headers = {
             "poe-formkey": this.formkey,
             "poe-tchannel": this.channel["channel"],
             ...this.headers,
         };
-        console.log("ws_domain")
+        // console.log("ws_domain")
         await this.connect_ws();
-        console.log("connect_ws")
+        // console.log("connect_ws")
         await this.subscribe();
-        console.log("subscribe")
+        // console.log("subscribe")
     }
 
     async get_next_data() {
@@ -310,7 +317,7 @@ class Client {
         this.formkey = extractFormKey(r.data);
         this.viewer = nextData.props.pageProps.payload.viewer;
 
-        // // console.log(nextData)
+        // console.log(this.viewer)
 
         // fs.writeFile("nexdata.json", JSON.stringify(nextData), (err) => {
         //     if (err) throw err;
@@ -325,11 +332,16 @@ class Client {
         if (!viewer.availableBots) {
             throw new Error('Invalid token.');
         }
-        const botList = viewer.availableBots;
+        const botList = this.viewer.availableBots;
+
+        let BotsNames = {
+            "a2":"Claude-instant"
+        } 
         
+        // console.log("availableBots")
         // console.log(botList)
         const bots = {};
-        for (const bot of botList.filter(fast ==null? x.deletionState == 'not_deleted' :x => x.nickname == fast)) {
+        for (const bot of botList.filter(fast ==null? x.deletionState == 'not_deleted' :x => x.displayName == BotsNames[fast])) {
 
             // console.log(bot)
             const url = `https://poe.com/_next/data/${this.next_data.buildId}/${bot.displayName}.json`;
@@ -366,7 +378,7 @@ class Client {
     async get_channel_data(channel = null) {
         // logger.info('Downloading channel data...');
 
-        console.log(this.settings_url)
+        // console.log(this.settings_url)
         const r = await request_with_retries(() => this.session.get(this.settings_url));
         const data = r.data;
 
@@ -522,7 +534,7 @@ class Client {
 
     async *send_message(chatbot, message, with_chat_break = false, timeout = 20) {
 
-        console.log("Enviado mensaje..")
+        console.log("[...]")
         //if there is another active message, wait until it has finished sending
         while (Object.values(this.active_messages).includes(null)) {
             await new Promise(resolve => setTimeout(resolve, 10));
@@ -532,6 +544,7 @@ class Client {
         this.active_messages["pending"] = null;
 
         // console.log(`Sending message to ${chatbot}: ${message}`);
+        // console.log(this.bots[chatbot])
 
         const messageData = await this.send_query("AddHumanMessageMutation", {
             "bot": chatbot,
@@ -542,6 +555,8 @@ class Client {
         });
 
         delete this.active_messages["pending"];
+
+        // console.log( this.bots )
 
         if (!messageData["data"]["messageCreateWithStatus"]["messageLimit"]["canSend"]) {
             throw new Error(`Daily limit reached for ${chatbot}.`);
@@ -607,6 +622,7 @@ class Client {
     async get_message_history(chatbot, count = 25, cursor = null) {
 
         // console.log(chatbot)
+        // console.log(this.bots)
         // logger.info(`Downloading ${count} messages from ${chatbot}`);
         const result = await this.send_query("ChatListPaginationQuery", {
             "count": count,
@@ -655,30 +671,4 @@ class Client {
 
 load_queries();
 
-
 module.exports = { Client };
-
-// (async () => {
-
-
-//     console.log("eject.")
-//     var clientPoe = new Client();
-//     await clientPoe.init("QUTb7C8INEScs82y8QL3hA%3D%3D",null,null,"a2");
-//     console.log("instacia creada.")
-//     let reply;
-//     // for await (const mes of clientPoe.send_message("a2", "Hola")) {
-//     //     let data = {
-//     //         id: mes.id,
-//     //         message: mes.text
-//     //     }
-//     //     console.log("###")
-//     //     console.log(mes.id)
-//     //     console.log("----")
-//     //     console.log(mes.text)
-//     //     console.log("###")
-//     //     reply = mes.text;
-//     // }
-
-//     console.log("Fin.")
-    
-// })()
