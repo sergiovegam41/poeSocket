@@ -314,8 +314,8 @@ async function test() {
         
         socket.on('disconnect',async () => {
 
-            // await setTokenPoe(token)
-            console.log('Client disconnected');
+            await setTokenPoe(token)
+            console.log('[CLIENT DISCONECT]');
             // Realizar acciones adicionales si es necesario
         });
 
