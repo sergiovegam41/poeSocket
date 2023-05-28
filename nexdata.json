@@ -1,1 +1,551 @@
-{"props":{"bid":"QUTb7C8INEScs82y8QL3hA==","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36","middlewareStart":"1684255335782","path":"/","pageProps":{"payload":{"chatOfBotDisplayName":{"defaultBotObject":{"displayName":"Sage","id":"Qm90OjMwMDI=","nickname":"capybara","hasWelcomeTopics":true,"deletionState":"not_deleted","image":{"__typename":"LocalBotImage","localName":"openaiAvatar"},"__isNode":"Bot","creator":{"profilePhotoUrl":"https://qph.cf2.quoracdn.net/main-thumb-2187163946-50-rlxebmbvdcdfyezxboaarziszfnllwsh.jpeg","fullName":"Poe","handle":"poe","__isNode":"PoeUser","id":"UG9lVXNlcjoyMTg3MTYzOTQ2"},"description":"Good in languages other than English, and also in programming-related tasks. Powered by gpt-3.5-turbo.","poweredBy":"This bot is powered by OpenAI.","messageLimit":{"numMessagesRemaining":null,"dailyLimit":null,"shouldShowRemainingMessageCount":false,"resetTime":1684281600000000,"dailyBalance":null},"hasSuggestedReplies":true,"disclaimerText":"This bot may make incorrect statements. It does not have knowledge of events after 2021. ","isApiBot":false,"isPrivateBot":false,"contextClearWindowSecs":1800,"introduction":"","model":"capybara","isSystemBot":true,"viewerIsCreator":false,"hasClearContext":true,"isDown":false,"isLimitedAccess":false,"handle":"Sage","viewerIsFollower":false,"isPromptPublic":false,"promptPlaintext":"","botId":3002,"followerCount":32486},"id":"Q2hhdDoxNTEwNzAx","chatId":1510701,"shouldShowDisclaimer":false,"defaultBotNickname":"capybara","__isNode":"Chat","messagesConnection":{"edges":[{"node":{"messageId":771273868,"creationTime":1684225389744113,"text":"No es ético ni legal tomar las cookies de otras webs desde una web distinta sin el consentimiento explícito del usuario. Las cookies son pequeños archivos de texto que se almacenan en el navegador del usuario y se utilizan para identificar y autenticar a los usuarios en un sitio web. Si una web intenta acceder a las cookies de otro sitio web, estaría violando la privacidad del usuario y la política de privacidad del sitio web original.\n\nAdemás, la mayoría de los navegadores modernos tienen medidas de seguridad que impiden que un sitio web acceda a las cookies de otro sitio web. Incluso si fuera posible acceder a las cookies de otro sitio web, hacerlo sin el consentimiento del usuario es una práctica inaceptable y potencialmente ilegal.","author":"capybara","linkifiedText":"No es ético ni legal tomar las cookies de otras webs desde una web distinta sin el consentimiento explícito del usuario. Las cookies son pequeños archivos de texto que se almacenan en el navegador del usuario y se utilizan para identificar y autenticar a los usuarios en un sitio web. Si una web intenta acceder a las cookies de otro sitio web, estaría violando la privacidad del usuario y la política de privacidad del sitio web original.\n\nAdemás, la mayoría de los navegadores modernos tienen medidas de seguridad que impiden que un sitio web acceda a las cookies de otro sitio web. Incluso si fuera posible acceder a las cookies de otro sitio web, hacerlo sin el consentimiento del usuario es una práctica inaceptable y potencialmente ilegal.","state":"complete","contentType":"text_markdown","suggestedReplies":[],"vote":null,"voteReason":null,"__isNode":"Message","__typename":"Message","id":"TWVzc2FnZTo3NzEyNzM4Njg="},"cursor":"771273868","id":"TWVzc2FnZUVkZ2U6NzcxMjczODY4Ojc3MTI3Mzg2OA=="},{"node":{"messageId":771321275,"creationTime":1684225580287003,"text":"","author":"chat_break","linkifiedText":"","state":"complete","contentType":"text_markdown","suggestedReplies":[],"vote":null,"voteReason":null,"__isNode":"Message","__typename":"Message","id":"TWVzc2FnZTo3NzEzMjEyNzU="},"cursor":"771321275","id":"TWVzc2FnZUVkZ2U6NzcxMzIxMjc1Ojc3MTMyMTI3NQ=="},{"node":{"messageId":771321780,"creationTime":1684225582309258,"text":"Como cambiar el grosor del indicador intermitente css?","author":"human","linkifiedText":"Como cambiar el grosor del indicador intermitente css?","state":"complete","contentType":"text_markdown","suggestedReplies":[],"vote":null,"voteReason":null,"__isNode":"Message","__typename":"Message","id":"TWVzc2FnZTo3NzEzMjE3ODA="},"cursor":"771321780","id":"TWVzc2FnZUVkZ2U6NzcxMzIxNzgwOjc3MTMyMTc4MA=="},{"node":{"messageId":771321785,"creationTime":1684225582336817,"text":"Para cambiar el grosor del indicador intermitente en CSS, puedes utilizar la propiedad `border-width`. Por ejemplo, para establecer un grosor de borde de 3 píxeles, puedes hacer lo siguiente:\n\n```\n/* Cambiar el grosor del borde del indicador intermitente */\n  .mi-indicador-intermitente {\n    border-width: 3px;\n  }\n```\n\nTen en cuenta que esto cambiará el grosor del borde de todo el elemento que contiene el indicador intermitente. Si deseas cambiar específicamente el grosor del borde del indicador intermitente, en lugar de todo el elemento, puedes utilizar la propiedad `border-width` en el selector que apunta al elemento `::before` o `::after` que contiene el indicador intermitente. Por ejemplo:\n\n```\n/* Cambiar el grosor del borde del indicador intermitente */\n  .mi-indicador-intermitente::before {\n    border-width: 3px;\n  }\n```\n\nTen en cuenta que el selector específico que debes utilizar dependerá del método que estés utilizando para crear el indicador intermitente en CSS.","author":"capybara","linkifiedText":"Para cambiar el grosor del indicador intermitente en CSS, puedes utilizar la propiedad `border-width`. Por ejemplo, para establecer un grosor de borde de 3 píxeles, puedes hacer lo siguiente:\n\n```\n/* Cambiar el grosor del borde del indicador intermitente */\n  .mi-indicador-intermitente {\n    border-width: 3px;\n  }\n```\n\nTen en cuenta que esto cambiará el grosor del borde de todo el elemento que contiene el indicador intermitente. Si deseas cambiar específicamente el grosor del borde del indicador intermitente, en lugar de todo el elemento, puedes utilizar la propiedad `border-width` en el selector que apunta al elemento `::before` o `::after` que contiene el indicador intermitente. Por ejemplo:\n\n```\n/* Cambiar el grosor del borde del indicador intermitente */\n  .mi-indicador-intermitente::before {\n    border-width: 3px;\n  }\n```\n\nTen en cuenta que el selector específico que debes utilizar dependerá del método que estés utilizando para crear el indicador intermitente en CSS.","state":"complete","contentType":"text_markdown","suggestedReplies":[],"vote":null,"voteReason":null,"__isNode":"Message","__typename":"Message","id":"TWVzc2FnZTo3NzEzMjE3ODU="},"cursor":"771321785","id":"TWVzc2FnZUVkZ2U6NzcxMzIxNzg1Ojc3MTMyMTc4NQ=="},{"node":{"messageId":777645720,"creationTime":1684254345931068,"text":"","author":"chat_break","linkifiedText":"","state":"complete","contentType":"text_markdown","suggestedReplies":[],"vote":null,"voteReason":null,"__isNode":"Message","__typename":"Message","id":"TWVzc2FnZTo3Nzc2NDU3MjA="},"cursor":"777645720","id":"TWVzc2FnZUVkZ2U6Nzc3NjQ1NzIwOjc3NzY0NTcyMA=="}],"pageInfo":{"hasPreviousPage":true,"startCursor":"771273868"},"id":"1510701"}},"viewer":{"uid":2120551115,"primaryEmail":"sergioluisvega41@gmail.com","poeUser":{"fullName":"Sergio Vega","id":"UG9lVXNlcjoyMTIwNTUxMTE1","handle":"sergiovega","creationTime":1678572838451784},"availableBots":[{"id":"Qm90OjMwMDI=","handle":"Sage","displayName":"Sage","isLimitedAccess":false,"deletionState":"not_deleted","image":{"__typename":"LocalBotImage","localName":"openaiAvatar"},"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":false,"isSystemBot":true,"nickname":"capybara","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjMwMDc=","handle":"GPT-4","displayName":"GPT-4","isLimitedAccess":true,"deletionState":"not_deleted","image":{"__typename":"LocalBotImage","localName":"Avatar_GPT_Blue"},"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":false,"isSystemBot":true,"nickname":"beaver","messageLimit":{"monthlyLimit":600}},{"id":"Qm90OjEwMDg=","handle":"Claude+","displayName":"Claude+","isLimitedAccess":true,"deletionState":"not_deleted","image":{"__typename":"LocalBotImage","localName":"Avatar_Orange_Gradient"},"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":false,"isSystemBot":true,"nickname":"a2_2","messageLimit":{"monthlyLimit":1000}},{"id":"Qm90OjEwMDk=","handle":"Claude-instant-100k","displayName":"Claude-instant-100k","isLimitedAccess":true,"deletionState":"not_deleted","image":{"__typename":"LocalBotImage","localName":"Avatar_Placeholder_Orange_Beta"},"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":false,"isSystemBot":true,"nickname":"a2_100k","messageLimit":{"monthlyLimit":100}},{"id":"Qm90OjEwMDY=","handle":"Claude-instant","displayName":"Claude-instant","isLimitedAccess":false,"deletionState":"not_deleted","image":{"__typename":"LocalBotImage","localName":"Avatar_Placeholder_Orange"},"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":false,"isSystemBot":true,"nickname":"a2","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjMwMDQ=","handle":"ChatGPT","displayName":"ChatGPT","isLimitedAccess":false,"deletionState":"not_deleted","image":{"__typename":"LocalBotImage","localName":"Avatar_Placeholder_Blue"},"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":false,"isSystemBot":true,"nickname":"chinchilla","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjExODE4MDA=","handle":"botego","displayName":"botego","isLimitedAccess":false,"deletionState":"not_deleted","image":null,"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":true,"isSystemBot":false,"nickname":"botego","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjExODQwODE=","handle":"Abor","displayName":"Abor","isLimitedAccess":false,"deletionState":"not_deleted","image":null,"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":true,"isSystemBot":false,"nickname":"abor","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjEyMzY3MTI=","handle":"Bblia","displayName":"Bblia","isLimitedAccess":false,"deletionState":"not_deleted","image":null,"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":true,"isSystemBot":false,"nickname":"bblia","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjQwMDA=","handle":"NeevaAI","displayName":"NeevaAI","isLimitedAccess":false,"deletionState":"not_deleted","image":{"__typename":"LocalBotImage","localName":"neevaAvatar"},"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":false,"isSystemBot":true,"nickname":"hutia","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjMwMDM=","handle":"Dragonfly","displayName":"Dragonfly","isLimitedAccess":false,"deletionState":"not_deleted","image":{"__typename":"LocalBotImage","localName":"openaiAvatar-blue"},"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":false,"isSystemBot":true,"nickname":"nutria","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjExOTgzNTA=","handle":"accions","displayName":"accions","isLimitedAccess":false,"deletionState":"not_deleted","image":null,"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":true,"isSystemBot":false,"nickname":"accions","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjEwMDA3MTc=","handle":"Midjourney","displayName":"Midjourney","isLimitedAccess":false,"deletionState":"not_deleted","image":{"__typename":"UrlBotImage","url":"https://qph.cf2.quoracdn.net/main-thumb-pb-1000717-200-durpxbtcjedvgwnzwwrqfwfajusnmfzn.jpeg"},"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":false,"isSystemBot":false,"nickname":"midjourney","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjExNjk2NzY=","handle":"BotGoExpress","displayName":"BotGoExpress","isLimitedAccess":false,"deletionState":"not_deleted","image":null,"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":false,"isSystemBot":false,"nickname":"botgoexpress","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjExOTczNTk=","handle":"AsesorAutos","displayName":"AsesorAutos","isLimitedAccess":false,"deletionState":"not_deleted","image":null,"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":true,"isSystemBot":false,"nickname":"asesorautos","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjExODE2ODM=","handle":"egobot","displayName":"egobot","isLimitedAccess":false,"deletionState":"not_deleted","image":null,"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":true,"isSystemBot":false,"nickname":"egobot","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjEwOTY2Mjk=","handle":"Bot3B9NF2BBU8","displayName":"Bot3B9NF2BBU8","isLimitedAccess":false,"deletionState":"not_deleted","image":null,"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":true,"isSystemBot":false,"nickname":"bot3b9nf2bbu8","messageLimit":{"monthlyLimit":null}},{"id":"Qm90OjEwMTUxODI=","handle":"SergioLuis","displayName":"SergioLuis","isLimitedAccess":false,"deletionState":"user_deleted","image":{"__typename":"UrlBotImage","url":"https://qph.cf2.quoracdn.net/main-thumb-pb-1015182-200-ilhsiaumsvrbzwexcidryokktqlqgjpp.jpeg"},"__isNode":"Bot","isPrivateBot":false,"viewerIsCreator":true,"isSystemBot":false,"nickname":"sergioluis","messageLimit":{"monthlyLimit":null}}],"allowUserCreatedBots":true,"enableExploreBotsPage":true,"enableUserProfilePage":true,"useNewLayout":true,"hasCompletedMultiplayerNux":true,"enableNux":true,"allowImages":false,"allowImagesForApiBots":false,"allowsUserBotCreation":true,"enableSharingApiBots":true,"isEligibleForWebSubscriptions":true,"webPurchasesEnabled":true,"removeWelcomeTopicsVariant":"show_first_day","showStopButton":false,"subscription":{"isActive":false,"id":"U3Vic2NyaXB0aW9uOjIxMjA1NTExMTU=","expiresTime":null,"willCancelAtPeriodEnd":null},"webSubscriptionPriceInfo":{"yearlyPrice":"CO$999900.00","yearlyPricePerMonth":"CO$83325.00","yearlyPercentageSavings":"16%","isFreeTrialAvailable":true,"id":"V2ViU3Vic2NyaXB0aW9uUHJpY2VJbmZvOjIxMjA1NTExMTU=","monthlyPrice":"CO$99900.00"},"shouldSeeWebSubscriptionAnnouncement":false,"id":"Vmlld2VyOjA="}},"queryVariables":{},"additionalProps":{},"__ni18n_server__":{"resources":{"en":{"translation":{}}},"ns":["translation"],"lng":"en"}},"__N_SSP":true},"page":"/","query":{},"buildId":"weDPQeru2iIRsrsmwZfMu","assetPrefix":"https://psc2.cf2.poecdn.net/MVBRPoQISYdid4MeCNQqvuRI","isFallback":false,"gssp":true,"appGip":true,"scriptLoader":[]}
+{
+    "props": {
+        "bid": "QUTb7C8INEScs82y8QL3hA==",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+        "middlewareStart": "1684255335782",
+        "path": "/",
+        "pageProps": {
+            "payload": {
+                "chatOfBotDisplayName": {
+                    "defaultBotObject": {
+                        "displayName": "Sage",
+                        "id": "Qm90OjMwMDI=",
+                        "nickname": "capybara",
+                        "hasWelcomeTopics": true,
+                        "deletionState": "not_deleted",
+                        "image": {
+                            "__typename": "LocalBotImage",
+                            "localName": "openaiAvatar"
+                        },
+                        "__isNode": "Bot",
+                        "creator": {
+                            "profilePhotoUrl": "https://qph.cf2.quoracdn.net/main-thumb-2187163946-50-rlxebmbvdcdfyezxboaarziszfnllwsh.jpeg",
+                            "fullName": "Poe",
+                            "handle": "poe",
+                            "__isNode": "PoeUser",
+                            "id": "UG9lVXNlcjoyMTg3MTYzOTQ2"
+                        },
+                        "description": "Good in languages other than English, and also in programming-related tasks. Powered by gpt-3.5-turbo.",
+                        "poweredBy": "This bot is powered by OpenAI.",
+                        "messageLimit": {
+                            "numMessagesRemaining": null,
+                            "dailyLimit": null,
+                            "shouldShowRemainingMessageCount": false,
+                            "resetTime": 1684281600000000,
+                            "dailyBalance": null
+                        },
+                        "hasSuggestedReplies": true,
+                        "disclaimerText": "This bot may make incorrect statements. It does not have knowledge of events after 2021. ",
+                        "isApiBot": false,
+                        "isPrivateBot": false,
+                        "contextClearWindowSecs": 1800,
+                        "introduction": "",
+                        "model": "capybara",
+                        "isSystemBot": true,
+                        "viewerIsCreator": false,
+                        "hasClearContext": true,
+                        "isDown": false,
+                        "isLimitedAccess": false,
+                        "handle": "Sage",
+                        "viewerIsFollower": false,
+                        "isPromptPublic": false,
+                        "promptPlaintext": "",
+                        "botId": 3002,
+                        "followerCount": 32486
+                    },
+                    "id": "Q2hhdDoxNTEwNzAx",
+                    "chatId": 1510701,
+                    "shouldShowDisclaimer": false,
+                    "defaultBotNickname": "capybara",
+                    "__isNode": "Chat",
+                    "messagesConnection": {
+                        "edges": [
+                            {
+                                "node": {
+                                    "messageId": 771273868,
+                                    "creationTime": 1684225389744113,
+                                    "text": "No es ético ni legal tomar las cookies de otras webs desde una web distinta sin el consentimiento explícito del usuario. Las cookies son pequeños archivos de texto que se almacenan en el navegador del usuario y se utilizan para identificar y autenticar a los usuarios en un sitio web. Si una web intenta acceder a las cookies de otro sitio web, estaría violando la privacidad del usuario y la política de privacidad del sitio web original.\n\nAdemás, la mayoría de los navegadores modernos tienen medidas de seguridad que impiden que un sitio web acceda a las cookies de otro sitio web. Incluso si fuera posible acceder a las cookies de otro sitio web, hacerlo sin el consentimiento del usuario es una práctica inaceptable y potencialmente ilegal.",
+                                    "author": "capybara",
+                                    "linkifiedText": "No es ético ni legal tomar las cookies de otras webs desde una web distinta sin el consentimiento explícito del usuario. Las cookies son pequeños archivos de texto que se almacenan en el navegador del usuario y se utilizan para identificar y autenticar a los usuarios en un sitio web. Si una web intenta acceder a las cookies de otro sitio web, estaría violando la privacidad del usuario y la política de privacidad del sitio web original.\n\nAdemás, la mayoría de los navegadores modernos tienen medidas de seguridad que impiden que un sitio web acceda a las cookies de otro sitio web. Incluso si fuera posible acceder a las cookies de otro sitio web, hacerlo sin el consentimiento del usuario es una práctica inaceptable y potencialmente ilegal.",
+                                    "state": "complete",
+                                    "contentType": "text_markdown",
+                                    "suggestedReplies": [],
+                                    "vote": null,
+                                    "voteReason": null,
+                                    "__isNode": "Message",
+                                    "__typename": "Message",
+                                    "id": "TWVzc2FnZTo3NzEyNzM4Njg="
+                                },
+                                "cursor": "771273868",
+                                "id": "TWVzc2FnZUVkZ2U6NzcxMjczODY4Ojc3MTI3Mzg2OA=="
+                            },
+                            {
+                                "node": {
+                                    "messageId": 771321275,
+                                    "creationTime": 1684225580287003,
+                                    "text": "",
+                                    "author": "chat_break",
+                                    "linkifiedText": "",
+                                    "state": "complete",
+                                    "contentType": "text_markdown",
+                                    "suggestedReplies": [],
+                                    "vote": null,
+                                    "voteReason": null,
+                                    "__isNode": "Message",
+                                    "__typename": "Message",
+                                    "id": "TWVzc2FnZTo3NzEzMjEyNzU="
+                                },
+                                "cursor": "771321275",
+                                "id": "TWVzc2FnZUVkZ2U6NzcxMzIxMjc1Ojc3MTMyMTI3NQ=="
+                            },
+                            {
+                                "node": {
+                                    "messageId": 771321780,
+                                    "creationTime": 1684225582309258,
+                                    "text": "Como cambiar el grosor del indicador intermitente css?",
+                                    "author": "human",
+                                    "linkifiedText": "Como cambiar el grosor del indicador intermitente css?",
+                                    "state": "complete",
+                                    "contentType": "text_markdown",
+                                    "suggestedReplies": [],
+                                    "vote": null,
+                                    "voteReason": null,
+                                    "__isNode": "Message",
+                                    "__typename": "Message",
+                                    "id": "TWVzc2FnZTo3NzEzMjE3ODA="
+                                },
+                                "cursor": "771321780",
+                                "id": "TWVzc2FnZUVkZ2U6NzcxMzIxNzgwOjc3MTMyMTc4MA=="
+                            },
+                            {
+                                "node": {
+                                    "messageId": 771321785,
+                                    "creationTime": 1684225582336817,
+                                    "text": "Para cambiar el grosor del indicador intermitente en CSS, puedes utilizar la propiedad `border-width`. Por ejemplo, para establecer un grosor de borde de 3 píxeles, puedes hacer lo siguiente:\n\n```\n/* Cambiar el grosor del borde del indicador intermitente */\n  .mi-indicador-intermitente {\n    border-width: 3px;\n  }\n```\n\nTen en cuenta que esto cambiará el grosor del borde de todo el elemento que contiene el indicador intermitente. Si deseas cambiar específicamente el grosor del borde del indicador intermitente, en lugar de todo el elemento, puedes utilizar la propiedad `border-width` en el selector que apunta al elemento `::before` o `::after` que contiene el indicador intermitente. Por ejemplo:\n\n```\n/* Cambiar el grosor del borde del indicador intermitente */\n  .mi-indicador-intermitente::before {\n    border-width: 3px;\n  }\n```\n\nTen en cuenta que el selector específico que debes utilizar dependerá del método que estés utilizando para crear el indicador intermitente en CSS.",
+                                    "author": "capybara",
+                                    "linkifiedText": "Para cambiar el grosor del indicador intermitente en CSS, puedes utilizar la propiedad `border-width`. Por ejemplo, para establecer un grosor de borde de 3 píxeles, puedes hacer lo siguiente:\n\n```\n/* Cambiar el grosor del borde del indicador intermitente */\n  .mi-indicador-intermitente {\n    border-width: 3px;\n  }\n```\n\nTen en cuenta que esto cambiará el grosor del borde de todo el elemento que contiene el indicador intermitente. Si deseas cambiar específicamente el grosor del borde del indicador intermitente, en lugar de todo el elemento, puedes utilizar la propiedad `border-width` en el selector que apunta al elemento `::before` o `::after` que contiene el indicador intermitente. Por ejemplo:\n\n```\n/* Cambiar el grosor del borde del indicador intermitente */\n  .mi-indicador-intermitente::before {\n    border-width: 3px;\n  }\n```\n\nTen en cuenta que el selector específico que debes utilizar dependerá del método que estés utilizando para crear el indicador intermitente en CSS.",
+                                    "state": "complete",
+                                    "contentType": "text_markdown",
+                                    "suggestedReplies": [],
+                                    "vote": null,
+                                    "voteReason": null,
+                                    "__isNode": "Message",
+                                    "__typename": "Message",
+                                    "id": "TWVzc2FnZTo3NzEzMjE3ODU="
+                                },
+                                "cursor": "771321785",
+                                "id": "TWVzc2FnZUVkZ2U6NzcxMzIxNzg1Ojc3MTMyMTc4NQ=="
+                            },
+                            {
+                                "node": {
+                                    "messageId": 777645720,
+                                    "creationTime": 1684254345931068,
+                                    "text": "",
+                                    "author": "chat_break",
+                                    "linkifiedText": "",
+                                    "state": "complete",
+                                    "contentType": "text_markdown",
+                                    "suggestedReplies": [],
+                                    "vote": null,
+                                    "voteReason": null,
+                                    "__isNode": "Message",
+                                    "__typename": "Message",
+                                    "id": "TWVzc2FnZTo3Nzc2NDU3MjA="
+                                },
+                                "cursor": "777645720",
+                                "id": "TWVzc2FnZUVkZ2U6Nzc3NjQ1NzIwOjc3NzY0NTcyMA=="
+                            }
+                        ],
+                        "pageInfo": {
+                            "hasPreviousPage": true,
+                            "startCursor": "771273868"
+                        },
+                        "id": "1510701"
+                    }
+                },
+                "viewer": {
+                    "uid": 2120551115,
+                    "primaryEmail": "sergioluisvega41@gmail.com",
+                    "poeUser": {
+                        "fullName": "Sergio Vega",
+                        "id": "UG9lVXNlcjoyMTIwNTUxMTE1",
+                        "handle": "sergiovega",
+                        "creationTime": 1678572838451784
+                    },
+                    "availableBots": [
+                        {
+                            "id": "Qm90OjMwMDI=",
+                            "handle": "Sage",
+                            "displayName": "Sage",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": {
+                                "__typename": "LocalBotImage",
+                                "localName": "openaiAvatar"
+                            },
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": false,
+                            "isSystemBot": true,
+                            "nickname": "capybara",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjMwMDc=",
+                            "handle": "GPT-4",
+                            "displayName": "GPT-4",
+                            "isLimitedAccess": true,
+                            "deletionState": "not_deleted",
+                            "image": {
+                                "__typename": "LocalBotImage",
+                                "localName": "Avatar_GPT_Blue"
+                            },
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": false,
+                            "isSystemBot": true,
+                            "nickname": "beaver",
+                            "messageLimit": {
+                                "monthlyLimit": 600
+                            }
+                        },
+                        {
+                            "id": "Qm90OjEwMDg=",
+                            "handle": "Claude+",
+                            "displayName": "Claude+",
+                            "isLimitedAccess": true,
+                            "deletionState": "not_deleted",
+                            "image": {
+                                "__typename": "LocalBotImage",
+                                "localName": "Avatar_Orange_Gradient"
+                            },
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": false,
+                            "isSystemBot": true,
+                            "nickname": "a2_2",
+                            "messageLimit": {
+                                "monthlyLimit": 1000
+                            }
+                        },
+                        {
+                            "id": "Qm90OjEwMDk=",
+                            "handle": "Claude-instant-100k",
+                            "displayName": "Claude-instant-100k",
+                            "isLimitedAccess": true,
+                            "deletionState": "not_deleted",
+                            "image": {
+                                "__typename": "LocalBotImage",
+                                "localName": "Avatar_Placeholder_Orange_Beta"
+                            },
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": false,
+                            "isSystemBot": true,
+                            "nickname": "a2_100k",
+                            "messageLimit": {
+                                "monthlyLimit": 100
+                            }
+                        },
+                        {
+                            "id": "Qm90OjEwMDY=",
+                            "handle": "Claude-instant",
+                            "displayName": "Claude-instant",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": {
+                                "__typename": "LocalBotImage",
+                                "localName": "Avatar_Placeholder_Orange"
+                            },
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": false,
+                            "isSystemBot": true,
+                            "nickname": "a2",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjMwMDQ=",
+                            "handle": "ChatGPT",
+                            "displayName": "ChatGPT",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": {
+                                "__typename": "LocalBotImage",
+                                "localName": "Avatar_Placeholder_Blue"
+                            },
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": false,
+                            "isSystemBot": true,
+                            "nickname": "chinchilla",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjExODE4MDA=",
+                            "handle": "botego",
+                            "displayName": "botego",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": null,
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": true,
+                            "isSystemBot": false,
+                            "nickname": "botego",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjExODQwODE=",
+                            "handle": "Abor",
+                            "displayName": "Abor",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": null,
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": true,
+                            "isSystemBot": false,
+                            "nickname": "abor",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjEyMzY3MTI=",
+                            "handle": "Bblia",
+                            "displayName": "Bblia",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": null,
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": true,
+                            "isSystemBot": false,
+                            "nickname": "bblia",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjQwMDA=",
+                            "handle": "NeevaAI",
+                            "displayName": "NeevaAI",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": {
+                                "__typename": "LocalBotImage",
+                                "localName": "neevaAvatar"
+                            },
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": false,
+                            "isSystemBot": true,
+                            "nickname": "hutia",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjMwMDM=",
+                            "handle": "Dragonfly",
+                            "displayName": "Dragonfly",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": {
+                                "__typename": "LocalBotImage",
+                                "localName": "openaiAvatar-blue"
+                            },
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": false,
+                            "isSystemBot": true,
+                            "nickname": "nutria",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjExOTgzNTA=",
+                            "handle": "accions",
+                            "displayName": "accions",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": null,
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": true,
+                            "isSystemBot": false,
+                            "nickname": "accions",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjEwMDA3MTc=",
+                            "handle": "Midjourney",
+                            "displayName": "Midjourney",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": {
+                                "__typename": "UrlBotImage",
+                                "url": "https://qph.cf2.quoracdn.net/main-thumb-pb-1000717-200-durpxbtcjedvgwnzwwrqfwfajusnmfzn.jpeg"
+                            },
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": false,
+                            "isSystemBot": false,
+                            "nickname": "midjourney",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjExNjk2NzY=",
+                            "handle": "BotGoExpress",
+                            "displayName": "BotGoExpress",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": null,
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": false,
+                            "isSystemBot": false,
+                            "nickname": "botgoexpress",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjExOTczNTk=",
+                            "handle": "AsesorAutos",
+                            "displayName": "AsesorAutos",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": null,
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": true,
+                            "isSystemBot": false,
+                            "nickname": "asesorautos",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjExODE2ODM=",
+                            "handle": "egobot",
+                            "displayName": "egobot",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": null,
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": true,
+                            "isSystemBot": false,
+                            "nickname": "egobot",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjEwOTY2Mjk=",
+                            "handle": "Bot3B9NF2BBU8",
+                            "displayName": "Bot3B9NF2BBU8",
+                            "isLimitedAccess": false,
+                            "deletionState": "not_deleted",
+                            "image": null,
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": true,
+                            "isSystemBot": false,
+                            "nickname": "bot3b9nf2bbu8",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        },
+                        {
+                            "id": "Qm90OjEwMTUxODI=",
+                            "handle": "SergioLuis",
+                            "displayName": "SergioLuis",
+                            "isLimitedAccess": false,
+                            "deletionState": "user_deleted",
+                            "image": {
+                                "__typename": "UrlBotImage",
+                                "url": "https://qph.cf2.quoracdn.net/main-thumb-pb-1015182-200-ilhsiaumsvrbzwexcidryokktqlqgjpp.jpeg"
+                            },
+                            "__isNode": "Bot",
+                            "isPrivateBot": false,
+                            "viewerIsCreator": true,
+                            "isSystemBot": false,
+                            "nickname": "sergioluis",
+                            "messageLimit": {
+                                "monthlyLimit": null
+                            }
+                        }
+                    ],
+                    "allowUserCreatedBots": true,
+                    "enableExploreBotsPage": true,
+                    "enableUserProfilePage": true,
+                    "useNewLayout": true,
+                    "hasCompletedMultiplayerNux": true,
+                    "enableNux": true,
+                    "allowImages": false,
+                    "allowImagesForApiBots": false,
+                    "allowsUserBotCreation": true,
+                    "enableSharingApiBots": true,
+                    "isEligibleForWebSubscriptions": true,
+                    "webPurchasesEnabled": true,
+                    "removeWelcomeTopicsVariant": "show_first_day",
+                    "showStopButton": false,
+                    "subscription": {
+                        "isActive": false,
+                        "id": "U3Vic2NyaXB0aW9uOjIxMjA1NTExMTU=",
+                        "expiresTime": null,
+                        "willCancelAtPeriodEnd": null
+                    },
+                    "webSubscriptionPriceInfo": {
+                        "yearlyPrice": "CO$999900.00",
+                        "yearlyPricePerMonth": "CO$83325.00",
+                        "yearlyPercentageSavings": "16%",
+                        "isFreeTrialAvailable": true,
+                        "id": "V2ViU3Vic2NyaXB0aW9uUHJpY2VJbmZvOjIxMjA1NTExMTU=",
+                        "monthlyPrice": "CO$99900.00"
+                    },
+                    "shouldSeeWebSubscriptionAnnouncement": false,
+                    "id": "Vmlld2VyOjA="
+                }
+            },
+            "queryVariables": {},
+            "additionalProps": {},
+            "__ni18n_server__": {
+                "resources": {
+                    "en": {
+                        "translation": {}
+                    }
+                },
+                "ns": [
+                    "translation"
+                ],
+                "lng": "en"
+            }
+        },
+        "__N_SSP": true
+    },
+    "page": "/",
+    "query": {},
+    "buildId": "weDPQeru2iIRsrsmwZfMu",
+    "assetPrefix": "https://psc2.cf2.poecdn.net/MVBRPoQISYdid4MeCNQqvuRI",
+    "isFallback": false,
+    "gssp": true,
+    "appGip": true,
+    "scriptLoader": []
+}

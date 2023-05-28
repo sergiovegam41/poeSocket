@@ -249,10 +249,10 @@ class Client {
 
     }
 
-    async  init( token, proxy = null,  bot = null, fast ) {
+    async  init( token, proxy = null,  bot = null, fast, body = null ) {
 
         // console.log("init.");
-        
+        let bodyResp = {}
         this.proxy = proxy;
 
         this.session = axios.default.create({
@@ -280,13 +280,40 @@ class Client {
             "Cookie": cookies,
         };
 
+
         // console.log("config.")
         this.session.defaults.headers.common = this.headers;
-        this.next_data = await this.get_next_data();
-        // console.log("next_data")
-        this.channel = await this.get_channel_data();
-        // console.log("channel")
-        this.bots = bot != null? bot : await this.get_bots(fast);
+        
+        if(body != null){
+            // console.log("[NEX DATA RECYCLING]")
+            // console.log(body)
+            let dataTem = (await this.get_next_data(body.next_data));
+            this.next_data = dataTem.nextData; 
+            this.channel = body.channel
+            this.bots = body.bots
+
+
+
+        }else{
+            let dataTem = (await this.get_next_data());
+
+            this.next_data = dataTem.nextData;
+            bodyResp.next_data = dataTem.r
+
+                    
+            // console.log("next_data")
+            this.channel = await this.get_channel_data();
+            bodyResp.channel = this.channel
+            // console.log("channel")
+
+            this.bots = bot != null? bot : await this.get_bots(fast);
+            bodyResp.bots = this.bots
+
+
+        }
+
+
+
         // console.log("get_bots")
         this.bot_names = this.get_bot_names();
         // console.log("get_bot_names")
@@ -301,21 +328,42 @@ class Client {
         // console.log("connect_ws")
         await this.subscribe();
         // console.log("subscribe")
+
+        if(body == null){
+            // console.log("[GET NEX DATA]")
+        }
+        return bodyResp
     }
 
-    async get_next_data() {
+    async get_next_data(next_data = null) {
         // logger.info('Downloading next_data...');
         // console.log(this.home_url)
-
-        const r = await request_with_retries(() => this.session.get(this.home_url));
+        var r = null;
+        if(next_data == null){
+         r = await request_with_retries(() => this.session.get(this.home_url));
+        }else{
+         r = next_data;
+        }
+  
+        
         const jsonRegex = /<script id="__NEXT_DATA__" type="application\/json">(.+?)<\/script>/;
         const jsonText = jsonRegex.exec(r.data)[1];
         const nextData = JSON.parse(jsonText);
-        // const r = dstatic
-
 
         this.formkey = extractFormKey(r.data);
         this.viewer = nextData.props.pageProps.payload.viewer;
+
+        return {
+            nextData: nextData,
+            r: r
+        };
+            
+
+
+        // const r = dstatic
+
+
+     
 
         // console.log(this.viewer)
 
@@ -324,7 +372,6 @@ class Client {
         //     console.log('File saved!');
         // });
 
-        return nextData;
     }
 
     async get_bots( fast = null) {
@@ -335,7 +382,14 @@ class Client {
         const botList = this.viewer.availableBots;
 
         let BotsNames = {
-            "a2":"Claude-instant"
+            "capybara":"Sage",
+            "beaver":"GPT-4",
+            "a2_2":"Claude+",
+            "a2_100k":"Claude-instant-100k",
+            "a2":"Claude-instant",
+            "chinchilla":"ChatGPT",
+            "hutia":"NeevaAI",
+            "nutria":"Dragonfly",
         } 
         
         // console.log("availableBots")
@@ -359,9 +413,11 @@ class Client {
             const chatData = r.data.pageProps.payload.chatOfBotDisplayName;
             bots[chatData.defaultBotObject.nickname] = chatData;
 
-            if(fast != null)break
+            if(fast != null) break
             
         }
+
+        // console.log(bots);
 
         return bots;
     }
@@ -621,17 +677,12 @@ class Client {
 
     async get_message_history(chatbot, count = 25, cursor = null) {
 
-        // console.log(chatbot)
-        // console.log(this.bots)
-        // logger.info(`Downloading ${count} messages from ${chatbot}`);
         const result = await this.send_query("ChatListPaginationQuery", {
             "count": count,
             "cursor": cursor,
             "id": this.bots[chatbot]["id"]
         });
 
-        // console.log(this.bots[chatbot]["id"])
-        // console.log(result)
         return result["data"]["node"]["messagesConnection"]["edges"];
     }
 

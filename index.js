@@ -124,7 +124,7 @@ async function test() {
         try {
 
             var client = new poe.Client();
-            await client.init(poeToken);
+             await client.init(poeToken);
 
             let data = client.get_bot_names()
             
@@ -245,11 +245,13 @@ async function test() {
         let bot = "a2";
         console.log("new conection")
     //    let token = "7wI28WkgKYcH5F4L7R5rNA%3D%3D"
-       let token = await getTokenPoe()
+       let token = "HGq0wTo4BUZp3PE_YudxVA%3D%3D"
+    //    let token = await getTokenPoe()
 
         var clientPoe = new poe.Client();
 
-        await clientPoe.init(token,null,null, bot);
+        let body = await clientPoe.init(token,null,null, bot);
+        // console.log(body)
         // let botsAny = clientPoe.bots;
 
         await clientPoe.purge_conversation(bot, -1);
@@ -264,7 +266,7 @@ async function test() {
 
             try {
                 var clientPoe = new poe.Client();
-                await clientPoe.init(token,null,null, bot);
+                await clientPoe.init(token,null,null, bot,body);
 
 
                 let reply;
@@ -312,7 +314,7 @@ async function test() {
         
         socket.on('disconnect',async () => {
 
-            await setTokenPoe(token)
+            // await setTokenPoe(token)
             console.log('Client disconnected');
             // Realizar acciones adicionales si es necesario
         });
