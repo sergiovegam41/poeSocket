@@ -295,6 +295,7 @@ class Client {
 
 
         }else{
+
             let dataTem = (await this.get_next_data());
 
             this.next_data = dataTem.nextData;
@@ -306,7 +307,7 @@ class Client {
             bodyResp.channel = this.channel
             // console.log("channel")
 
-            this.bots = bot != null? bot : await this.get_bots(fast);
+            this.bots = bot != null? bot : fast !=null? await this.get_bots(fast): await this.get_bots();
             bodyResp.bots = this.bots
 
 
@@ -360,17 +361,7 @@ class Client {
             
 
 
-        // const r = dstatic
-
-
-     
-
-        // console.log(this.viewer)
-
-        // fs.writeFile("nexdata.json", JSON.stringify(nextData), (err) => {
-        //     if (err) throw err;
-        //     console.log('File saved!');
-        // });
+ 
 
     }
 
@@ -380,6 +371,8 @@ class Client {
             throw new Error('Invalid token.');
         }
         const botList = this.viewer.availableBots;
+
+        // console.log("Sireee")
 
         let BotsNames = {
             "capybara":"Sage",
@@ -392,10 +385,24 @@ class Client {
             "nutria":"Dragonfly",
         } 
         
-        // console.log("availableBots")
-        // console.log(botList)
+
+        // console.log("Aca")
+        let botFilter = null;
+        let variantes = null;
+        if(fast != null){
+            botFilter = BotsNames[fast];
+            variantes = null
+            if(BotsNames[fast] == null){
+               variantes = this.generateUniqueVariants(fast) 
+            }
+        }
+      
+        // console.log("Aqui")
+        // console.log(fast)
+        // console.log(  botList.filter( x => x.deletionState == 'not_deleted' ))
+
         const bots = {};
-        for (const bot of botList.filter(fast ==null? x.deletionState == 'not_deleted' :x => x.displayName == BotsNames[fast])) {
+        for (const bot of botList.filter(fast == null?x => x.deletionState == 'not_deleted' : (botFilter == null? x => variantes.includes(x.displayName) :  x => x.displayName == botFilter ))) {
 
             // console.log(bot)
             const url = `https://poe.com/_next/data/${this.next_data.buildId}/${bot.displayName}.json`;
@@ -421,6 +428,31 @@ class Client {
 
         return bots;
     }
+
+    generateUniqueVariants(text) {
+        let variants = [];
+        if (text.length === 1) variants.push(text.toUpperCase(), text.toLowerCase());
+        else {
+          let firstHalf = text.slice(0, text.length / 2);
+          let secondHalf = text.slice(text.length / 2);
+          let firstHalfVariants = this.generateUniqueVariants(firstHalf);
+          let secondHalfVariants = this.generateUniqueVariants(secondHalf);
+          for (let first of firstHalfVariants) {
+            for (let second of secondHalfVariants) {
+              let variant = first + second;
+              if (!variants.includes(variant)) variants.push(variant);
+              let upperVariant = first.toUpperCase() + second;
+              if (!variants.includes(upperVariant)) variants.push(upperVariant);
+              let lowerVariant = first + second.toUpperCase();
+              if (!variants.includes(lowerVariant)) variants.push(lowerVariant);
+              let upperLowerVariant = first.toUpperCase() + second.toUpperCase();
+              if (!variants.includes(upperLowerVariant)) variants.push(upperLowerVariant);
+            }
+          }
+        }
+        return variants; 
+      }
+      
 
     get_bot_names() {
         const botNames = {};
@@ -596,16 +628,13 @@ class Client {
             await new Promise(resolve => setTimeout(resolve, 10));
         }
 
-        //null indicates that a message is still in progress
         this.active_messages["pending"] = null;
 
-        // console.log(`Sending message to ${chatbot}: ${message}`);
-        // console.log(this.bots[chatbot])
 
         const messageData = await this.send_query("AddHumanMessageMutation", {
             "bot": chatbot,
             "query": message,
-            "chatId": this.bots[chatbot]["chatId"],
+            "chatId": this.bots[chatbot.toLowerCase()]["chatId"],
             "source": null,
             "withChatBreak": with_chat_break
         });
@@ -680,7 +709,7 @@ class Client {
         const result = await this.send_query("ChatListPaginationQuery", {
             "count": count,
             "cursor": cursor,
-            "id": this.bots[chatbot]["id"]
+            "id": this.bots[chatbot.toLowerCase()]["id"]
         });
 
         return result["data"]["node"]["messagesConnection"]["edges"];

@@ -1,8 +1,10 @@
 // var botsdata = 
 const poe = require('./poe-client');
 require('dotenv').config()
+const axios = require('axios');
+
 // const { MongoClient, ServerApiVersion } = require('mongodb');
-const ObjectID = require('mongodb').ObjectID;
+// const ObjectID = require('mongodb').ObjectID;
 const express = require('express')
 const app = express()
 const server = require('http').createServer(app);
@@ -32,38 +34,7 @@ app.use(cors(corsOptions));
 const port = process.env.PORT || 3000
 const TOKEN_POE = process.env.POE_TOKEN
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const DATABASE = process.env.MONGO_DATABASE || "Bots"
-const uriMongo = process.env.MONGO_URI;
-const Mongoclient = new MongoClient(uriMongo, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-var ApisPoeClientAvailableCollection = null
-var poeTokensAvailableCollection = null
-var UsersCollection = null
-var DefaultsProntsCollection = null
-
-Mongoclient.connect(async err => {
-
-    ApisPoeClientAvailableCollection = Mongoclient.db(DATABASE).collection("ApisPoeClientAvailable");
-    poeTokensAvailableCollection = Mongoclient.db(DATABASE).collection("poeTokensAvailable");
-    UsersCollection = Mongoclient.db(DATABASE).collection("IAUsers");
-    DefaultsProntsCollection = Mongoclient.db(DATABASE).collection("DefaultsPronts");
-  
-    if (err) { console.log(err) } else {
-      this.ready = true
-    }
-  
-    console.log("Mongo Conectado a: " + DATABASE);
-    test();
-
-  
-    // const server = app.listen(port, () => {
-  
-    //   console.log(`La aplicación está corriendo en el puerto: ${port}`);
-    //   // console.log(`Api ready.`)
-    // })
-  
-  });
-
+test();
 
 async function test() {
 
@@ -87,7 +58,7 @@ async function test() {
         try {
 
             var client = new poe.Client();
-            await client.init(poeToken);
+            await client.init(poeToken, null, null, bot);
 
             let data = await client.get_message_history(bot)
             
@@ -110,23 +81,30 @@ async function test() {
 
     app.post('/bot-list', async function(req, res) {
 
-       let poeToken = req.body.poeToken||TOKEN_POE
-
+        // console.log("bot-list")
+        
+        let poeToken = req.body.poeToken||TOKEN_POE
+        
         let token = req.body.token||""
         let bot = req.body.bot||"a2"
         bot = bot.toLowerCase()
-
+        // console.log("1")
+        
         if(! await hasAuthority(token)) return res.send({
             success:false,
             message: "UNAUTHORIZED",
         })
         
         try {
-
+            
+            // console.log("2")
             var client = new poe.Client();
-             await client.init(poeToken);
-
+            // console.log("3")
+            await client.init(poeToken);
+            // console.log("4")
+            
             let data = client.get_bot_names()
+            // console.log("5")
             
             return res.send({
                 success:true,
@@ -161,7 +139,7 @@ async function test() {
         try {
 
             var client = new poe.Client();
-            await client.init(poeToken);
+            await client.init(poeToken, null, null, bot);
 
             await client.purge_conversation(bot, -1);
             client.disconnect_ws()
@@ -205,7 +183,7 @@ async function test() {
        try {
 
             var client = new poe.Client();
-            await client.init(poeToken);
+            await client.init(poeToken, null, null, bot);
 
             if(purge){
                 console.log("Purgado")
@@ -340,17 +318,17 @@ async function hasAuthority(token){
 
 
 async function getTokenPoe() {
-    let token = await poeTokensAvailableCollection.findOne();
-    console.log(`[TOKEN_TAKEN]: ${token.token}`)
-    await poeTokensAvailableCollection.deleteOne({ _id: token._id });
-    return token.token;
+    const resp = await axios.post(`${process.env.PARENT_HOST}/get-token`, { token:process.env.PARENT_HOST_PASSWORD });
+    console.log(resp.data.data.token)
+    console.log(`[TOKEN]: ${resp.data.data.token}`)
+    return resp.data.data.token;
 }
 
 async function setTokenPoe(token) {
-    // console.log(token)
+    const resp = await axios.post(`${process.env.PARENT_HOST}/set-token`, { token:process.env.PARENT_HOST_PASSWORD, poeToken:token });
     console.log(`[TOKEN_RETURNED]: ${token}`)
-    await poeTokensAvailableCollection.insertOne({ token: token});
-    return token;
+    return token
+
 }
   
 
