@@ -385,24 +385,12 @@ class Client {
             "nutria":"Dragonfly",
         } 
         
-
-        // console.log("Aca")
         let botFilter = null;
-        let variantes = null;
-        if(fast != null){
-            botFilter = BotsNames[fast];
-            variantes = null
-            if(BotsNames[fast] == null){
-               variantes = this.generateUniqueVariants(fast) 
-            }
-        }
-      
-        // console.log("Aqui")
-        // console.log(fast)
-        // console.log(  botList.filter( x => x.deletionState == 'not_deleted' ))
+
+        console.log(  fast )
 
         const bots = {};
-        for (const bot of botList.filter(fast == null?x => x.deletionState == 'not_deleted' : (botFilter == null? x => variantes.includes(x.displayName) :  x => x.displayName == botFilter ))) {
+        for (const bot of botList.filter(fast == null?x => x.deletionState == 'not_deleted' : (botFilter == null? x => x.displayName.toLowerCase() == fast.toLowerCase():  x => x.displayName == botFilter ))) {
 
             // console.log(bot)
             const url = `https://poe.com/_next/data/${this.next_data.buildId}/${bot.displayName}.json`;
@@ -428,30 +416,6 @@ class Client {
 
         return bots;
     }
-
-    generateUniqueVariants(text) {
-        let variants = [];
-        if (text.length === 1) variants.push(text.toUpperCase(), text.toLowerCase());
-        else {
-          let firstHalf = text.slice(0, text.length / 2);
-          let secondHalf = text.slice(text.length / 2);
-          let firstHalfVariants = this.generateUniqueVariants(firstHalf);
-          let secondHalfVariants = this.generateUniqueVariants(secondHalf);
-          for (let first of firstHalfVariants) {
-            for (let second of secondHalfVariants) {
-              let variant = first + second;
-              if (!variants.includes(variant)) variants.push(variant);
-              let upperVariant = first.toUpperCase() + second;
-              if (!variants.includes(upperVariant)) variants.push(upperVariant);
-              let lowerVariant = first + second.toUpperCase();
-              if (!variants.includes(lowerVariant)) variants.push(lowerVariant);
-              let upperLowerVariant = first.toUpperCase() + second.toUpperCase();
-              if (!variants.includes(upperLowerVariant)) variants.push(upperLowerVariant);
-            }
-          }
-        }
-        return variants; 
-      }
       
 
     get_bot_names() {
