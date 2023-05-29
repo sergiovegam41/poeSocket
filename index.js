@@ -221,7 +221,7 @@ async function test() {
     io.on('connection', async ( socket ) => { 
 
         let bot = "a2";
-        console.log("new conection")
+        console.log("[CLIENT_CONECTED]")
     //    let token = "7wI28WkgKYcH5F4L7R5rNA%3D%3D"
     //    let token = "HGq0wTo4BUZp3PE_YudxVA%3D%3D"
        let token = await getTokenPoe()

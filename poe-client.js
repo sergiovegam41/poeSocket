@@ -384,10 +384,14 @@ class Client {
             "hutia":"NeevaAI",
             "nutria":"Dragonfly",
         } 
-        
         let botFilter = null;
+        if(fast != null){
+            botFilter = BotsNames[fast];
+           
+        }
+        
 
-        console.log(  fast )
+        // console.log(  fast )
 
         const bots = {};
         for (const bot of botList.filter(fast == null?x => x.deletionState == 'not_deleted' : (botFilter == null? x => x.displayName.toLowerCase() == fast.toLowerCase():  x => x.displayName == botFilter ))) {
@@ -670,6 +674,7 @@ class Client {
 
     async get_message_history(chatbot, count = 25, cursor = null) {
 
+        // console.log(this.bots)
         const result = await this.send_query("ChatListPaginationQuery", {
             "count": count,
             "cursor": cursor,
