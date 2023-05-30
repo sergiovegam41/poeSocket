@@ -222,15 +222,13 @@ async function test() {
 
         let bot = "a2";
         console.log("[CLIENT_CONECTED]")
-    //    let token = "7wI28WkgKYcH5F4L7R5rNA%3D%3D"
-    //    let token = "HGq0wTo4BUZp3PE_YudxVA%3D%3D"
-       let token = await getTokenPoe()
+        // let token = "7wI28WkgKYcH5F4L7R5rNA%3D%3D"
+        // let token = "HGq0wTo4BUZp3PE_YudxVA%3D%3D"
+        let token = await getTokenPoe()
 
         var clientPoe = new poe.Client();
 
         let body = await clientPoe.init(token,null,null, bot);
-        // console.log(body)
-        // let botsAny = clientPoe.bots;
 
         await clientPoe.purge_conversation(bot, -1);
         console.log("[INSTANCE_CREATED]");        

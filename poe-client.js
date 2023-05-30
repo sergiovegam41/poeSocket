@@ -11,6 +11,17 @@ const parent_path = path.resolve(__dirname);
 const queries_path = path.join(parent_path, "poe_graphql");
 let queries = {};
 
+let BotsNamesColeb = {
+     "Sage": "capybara",
+     "GPT-4":"beaver",
+     "Claude+":"a2_2",
+     "Claude-instant-100k":"a2_100k",
+     "Claude-instant": "a2",
+     "ChatGPT":"chinchilla",
+     "NeevaAI":"hutia",
+     "Dragonfly": "nutria",
+ } 
+
 const cached_bots = {};
 
 const logger = console;
@@ -370,9 +381,9 @@ class Client {
         if (!viewer.availableBots) {
             throw new Error('Invalid token.');
         }
-        const botList = this.viewer.availableBots;
+        // const botList = this.viewer.availableBots;
 
-        // console.log("Sireee")
+        // console.log(fast)
 
         let BotsNames = {
             "capybara":"Sage",
@@ -384,20 +395,16 @@ class Client {
             "hutia":"NeevaAI",
             "nutria":"Dragonfly",
         } 
+      
         let botFilter = null;
         if(fast != null){
             botFilter = BotsNames[fast];
-           
         }
         
-
-        // console.log(  fast )
-
         const bots = {};
-        for (const bot of botList.filter(fast == null?x => x.deletionState == 'not_deleted' : (botFilter == null? x => x.displayName.toLowerCase() == fast.toLowerCase():  x => x.displayName == botFilter ))) {
+        for (let i= 1; i<2; i++) {
 
-            // console.log(bot)
-            const url = `https://poe.com/_next/data/${this.next_data.buildId}/${bot.displayName}.json`;
+            const url = `https://poe.com/_next/data/${this.next_data.buildId}/${botFilter==null?fast:botFilter}.json`;
             let r;
 
             if (this.use_cached_bots && cached_bots[url]) {
@@ -450,6 +457,11 @@ class Client {
     }
 
     async send_query(queryName, variables, queryDisplayName) {
+
+        if(BotsNamesColeb[variables.bot]!=null){
+            variables.bot = BotsNamesColeb[variables.bot]
+        }
+        // console.log()
         for (let i = 0; i < 20; i++) {
             const payload = generate_payload(queryName, variables);
             if (queryDisplayName) payload['queryName'] = queryDisplayName;
@@ -468,6 +480,7 @@ class Client {
         }
 
         throw new Error(`${queryName} failed too many times.`);
+
     }
 
     async subscribe() {
@@ -598,11 +611,19 @@ class Client {
 
         this.active_messages["pending"] = null;
 
+        // console.log(chatbot)
+        // console.log( this.bots)
+
+        const firstKey = Object.keys(this.bots)[0];
+        const firstValue = this.bots[firstKey]; 
+
+        // console.log(firstKey)
+        // console.log(firstValue["chatId"])
 
         const messageData = await this.send_query("AddHumanMessageMutation", {
             "bot": chatbot,
             "query": message,
-            "chatId": this.bots[chatbot.toLowerCase()]["chatId"],
+            "chatId": firstValue["chatId"],
             "source": null,
             "withChatBreak": with_chat_break
         });
