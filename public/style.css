@@ -207,7 +207,7 @@ img {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: gray white;
+  scrollbar-color: gray #343541;
 }
 
 /* Works on Chrome, Edge, and Safari */
@@ -216,13 +216,13 @@ img {
 }
 
 *::-webkit-scrollbar-track {
-  background: #FFF;
+  background: #343541;
 }
 
 *::-webkit-scrollbar-thumb {
   background-color: gray;
   border-radius: 20px;
-  border: 3px solid #FFF;
+  border: 3px solid #343541;
 }
 
 
