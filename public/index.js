@@ -16,16 +16,10 @@ socket.on('server:init',(data)=>{
     <div id="form">
         
         <h1>Anthropic</h1>
-
-        <input type="text"  id="mensage" cols="30" rows="10"></textarea>
+        
+        <textarea   rows="1" oninput="expandTextArea()"  type="text"  id="mensage"  placeholder="Send a message."></textarea>
         
         <div id="IA" >
-
-            <div class="vanilla n-e-wnew-n-e-w" >
-
-                <p id="IAResponse" class="IAResponse">Escribe algo para empezar 😁</p>
-            
-            </div>
             
         </div>
         
@@ -78,7 +72,7 @@ socket.on('server:newMessage',(data)=>{
 
 async function send(){
     console.log("send")
-
+    document.getElementById('mensage').placeholder  = "Send a message.";
     document.getElementById('mensage').readOnly  = true;
 
    let message = document.getElementById('mensage').value
@@ -101,10 +95,36 @@ async function send(){
 }
 
 
-document.addEventListener("keyup", function(event) {
-    if (event.keyCode === 13 && document.getElementById('mensage').value ) { 
-      send();  
+document.addEventListener("keydown", function(event) {
+    if (event.keyCode === 13 && document.getElementById('mensage').value && event.shiftKey!=1) { 
+        document.getElementById('mensage').rows = 1
+        send();  
+      
     }
 });
   
 
+
+
+function expandTextArea() {
+    console.log("Hola")
+
+    if(document.getElementById('mensage').value.endsWith("\n")) {
+        document.getElementById('mensage').value.trimRight("\n");
+    }
+        
+
+    let rows = document.getElementById('mensage').value.split("\n").length ;
+    console.log(rows)
+
+    if( rows > 1){
+        
+        document.getElementById('mensage').rows = rows
+    }
+
+    if( rows <= 1){
+
+        document.getElementById('mensage').rows = 1
+
+    }
+} 

@@ -741,4 +741,4 @@ class Client {
 
 load_queries();
 
-module.exports = { Client };
+module.exports = { Client };    
