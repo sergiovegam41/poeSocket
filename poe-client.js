@@ -12,8 +12,8 @@ const queries_path = path.join(parent_path, "poe_graphql");
 let queries = {};
 
 let BotsNamesColeb = {
-     "Sage": "capybara",
-     "GPT-4":"beaver",
+    "Sage": "capybara",
+    "GPT-4":"beaver",
      "Claude+":"a2_2",
      "Claude-instant-100k":"a2_100k",
      "Claude-instant": "a2",
@@ -550,6 +550,7 @@ class Client {
 
     on_ws_error(ws, error) {
         logger.warn(`Websocket returned error: ${error}`);
+        
         this.disconnect_ws();
 
         if (this.auto_reconnect) {
