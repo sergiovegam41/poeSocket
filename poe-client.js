@@ -751,23 +751,23 @@ load_queries();
 module.exports = { Client };    
 
 
-(async ()=>{
-    console.log("Hola")
+// (async ()=>{
+//     console.log("Hola")
 
-    let bot = "a2";
-        console.log("[CLIENT_CONECTED]")
-    let token = "7wI28WkgKYcH5F4L7R5rNA%3D%3D"
+//     let bot = "a2";
+//         console.log("[CLIENT_CONECTED]")
+//     let token = "7wI28WkgKYcH5F4L7R5rNA%3D%3D"
 
-    var clientPoe = new Client();
-    await clientPoe.init(token,null,null, bot);
-
-
-    let reply;
-    for await (const mes of clientPoe.send_message(bot, "Hola")) {
-        reply = mes.text.trim()
-    }
+//     var clientPoe = new Client();
+//     await clientPoe.init(token,null,null, bot);
 
 
-    console.log("[RESPONSE]: "+reply)
+//     let reply;
+//     for await (const mes of clientPoe.send_message(bot, "Hola")) {
+//         reply = mes.text.trim()
+//     }
 
-})()
+
+//     console.log("[RESPONSE]: "+reply)
+
+// })()
