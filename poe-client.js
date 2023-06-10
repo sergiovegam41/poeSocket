@@ -316,6 +316,8 @@ class Client {
             // console.log("next_data")
             this.channel = await this.get_channel_data();
             bodyResp.channel = this.channel
+
+            // console.log(this.channel)
             // console.log("channel")
 
             this.bots = bot != null? bot : fast !=null? await this.get_bots(fast): await this.get_bots();
@@ -378,7 +380,9 @@ class Client {
 
     async get_bots( fast = null) {
         const viewer = this.next_data.props.pageProps.payload.viewer;
-        if (!viewer.availableBots) {
+
+        // console.log(viewer.availableBotsConnection)
+        if (!viewer.availableBotsConnection) {
             throw new Error('Invalid token.');
         }
         // const botList = this.viewer.availableBots;
@@ -445,6 +449,8 @@ class Client {
         const r = await request_with_retries(() => this.session.get(this.settings_url));
         const data = r.data;
 
+
+        // console.log(data)
         return data.tchannelData;
     }
 
@@ -743,3 +749,25 @@ class Client {
 load_queries();
 
 module.exports = { Client };    
+
+
+(async ()=>{
+    console.log("Hola")
+
+    let bot = "a2";
+        console.log("[CLIENT_CONECTED]")
+    let token = "7wI28WkgKYcH5F4L7R5rNA%3D%3D"
+
+    var clientPoe = new Client();
+    await clientPoe.init(token,null,null, bot);
+
+
+    let reply;
+    for await (const mes of clientPoe.send_message(bot, "Hola")) {
+        reply = mes.text.trim()
+    }
+
+
+    console.log("[RESPONSE]: "+reply)
+
+})()
