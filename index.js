@@ -242,7 +242,7 @@ async function test() {
 
             try {
                 var clientPoe = new poe.Client();
-                await clientPoe.init(token,null,null, bot);
+                await clientPoe.init(token,null,null, bot,body );
 
 
                 let reply;
