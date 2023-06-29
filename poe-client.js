@@ -364,14 +364,16 @@ class Client {
         const jsonText = jsonRegex.exec(r.data)[1];
         const nextData = JSON.parse(jsonText);
 
+        // console.log(nextData)
+
         this.formkey = extractFormKey(r.data);
-        this.viewer = nextData.props.pageProps.payload.viewer;
+        // this.viewer = nextData.props.pageProps.payload.viewer;
 
         return {
             nextData: nextData,
             r: r
         };
-            
+
 
 
  
@@ -379,12 +381,12 @@ class Client {
     }
 
     async get_bots( fast = null) {
-        const viewer = this.next_data.props.pageProps.payload.viewer;
+        // const viewer = this.next_data.props.pageProps.payload.viewer;
 
-        // console.log(viewer.availableBotsConnection)
-        if (!viewer.availableBotsConnection) {
-            throw new Error('Invalid token.');
-        }
+        // // console.log(viewer.availableBotsConnection)
+        // if (!viewer.availableBotsConnection) {
+        //     throw new Error('Invalid token.');
+        // }
         // const botList = this.viewer.availableBots;
 
         // console.log(fast)
@@ -420,7 +422,8 @@ class Client {
                 cached_bots[url] = r;
             }
 
-            const chatData = r.data.pageProps.payload.chatOfBotDisplayName;
+            // console.log( r.data.pageProps )
+            const chatData = r.data.pageProps.data.chatOfBotDisplayName;
             bots[chatData.defaultBotObject.nickname] = chatData;
 
             if(fast != null) break
@@ -752,7 +755,7 @@ module.exports = { Client };
 
 
 // (async ()=>{
-//     console.log("Hola")
+//     // console.log("Hola")
 
 //     let bot = "a2";
 //         console.log("[CLIENT_CONECTED]")

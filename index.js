@@ -238,6 +238,7 @@ async function test() {
 
 
         socket.on('client:send',  async ( data ) => {
+        
             console.log("[TEXT]: "+data.message)
 
             try {
