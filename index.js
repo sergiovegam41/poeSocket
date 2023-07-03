@@ -242,8 +242,8 @@ async function test() {
             console.log("[TEXT]: "+data.message)
 
             try {
-                // var clientPoe = new poe.Client();
-                // await clientPoe.init(token,null,null, bot );
+                var clientPoe = new poe.Client();
+                await clientPoe.init( token );
 
 
                 let reply;
