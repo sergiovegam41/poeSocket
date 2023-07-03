@@ -58,7 +58,7 @@ async function test() {
         try {
 
             var client = new poe.Client();
-            await client.init(poeToken, null, null, bot);
+            await client.init(poeToken);
 
             let data = await client.get_message_history(bot)
             
@@ -139,7 +139,7 @@ async function test() {
         try {
 
             var client = new poe.Client();
-            await client.init(poeToken, null, null, bot);
+            await client.init(poeToken);
 
             await client.purge_conversation(bot, -1);
             client.disconnect_ws()
@@ -183,7 +183,7 @@ async function test() {
        try {
 
             var client = new poe.Client();
-            await client.init(poeToken, null, null, bot);
+            await client.init(poeToken);
 
             if(purge){
                 console.log("Purgado")
@@ -228,7 +228,7 @@ async function test() {
 
         var clientPoe = new poe.Client();
 
-        let body = await clientPoe.init(token,null,null, bot);
+        await clientPoe.init(token,null,null, bot);
 
         await clientPoe.purge_conversation(bot, -1);
         console.log("[INSTANCE_CREATED]");        
@@ -242,8 +242,8 @@ async function test() {
             console.log("[TEXT]: "+data.message)
 
             try {
-                var clientPoe = new poe.Client();
-                await clientPoe.init(token,null,null, bot );
+                // var clientPoe = new poe.Client();
+                // await clientPoe.init(token,null,null, bot );
 
 
                 let reply;

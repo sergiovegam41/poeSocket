@@ -1,3 +1,22 @@
+/*
+Adapted and rewritten to Node based on ading2210/poe-api
+
+ading2210/poe-api: a reverse engineered Python API wrapper for Quora's Poe
+Copyright (C) 2023 ading2210
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 
 const WebSocket = require('ws');
 const axios = require('axios');
@@ -5,26 +24,45 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const https = require('https');
+const _ = require('lodash');
 
+const directory = __dirname;
 
-const parent_path = path.resolve(__dirname);
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+const getSavedDeviceId = (userId) => {
+    const device_id_path = 'poe_device.json';
+    let device_ids = {};
+
+    if (fs.existsSync(device_id_path)) {
+        device_ids = JSON.parse(fs.readFileSync(device_id_path, 'utf8'));
+    }
+
+    if (device_ids.hasOwnProperty(userId)) {
+        return device_ids[userId];
+    }
+
+    const device_id = uuidv4();
+    device_ids[userId] = device_id;
+    fs.writeFileSync(device_id_path, JSON.stringify(device_ids, null, 2));
+
+    return device_id;
+};
+
+const parent_path = path.resolve(directory);
 const queries_path = path.join(parent_path, "poe_graphql");
 let queries = {};
-
-let BotsNamesColeb = {
-    "Sage": "capybara",
-    "GPT-4":"beaver",
-     "Claude+":"a2_2",
-     "Claude-instant-100k":"a2_100k",
-     "Claude-instant": "a2",
-     "ChatGPT":"chinchilla",
-     "NeevaAI":"hutia",
-     "Dragonfly": "nutria",
- } 
 
 const cached_bots = {};
 
 const logger = console;
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
 const user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36";
 
@@ -43,7 +81,7 @@ function extractFormKey(html) {
     }
     const formKey = formKeyList.join("");
 
-    return formKey;
+    return formKey.slice(0, -1);
 }
 
 
@@ -195,6 +233,18 @@ function md5() {
     return m;
 }
 
+function generateNonce(length = 16) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters[randomIndex];
+    }
+
+    return result;
+}
+
 function load_queries() {
     const files = fs.readdirSync(queries_path);
     for (const filename of files) {
@@ -216,8 +266,6 @@ function generate_payload(query, variables) {
 }
 
 async function request_with_retries(method, attempts = 10) {
-
-   
     const url = '';
     for (let i = 0; i < attempts; i++) {
         try {
@@ -228,11 +276,38 @@ async function request_with_retries(method, attempts = 10) {
             logger.warn(`Server returned a status code of ${response.status} while downloading ${url}. Retrying (${i + 1}/${attempts})...`);
         }
         catch (err) {
-            // console.log(err);
+            console.log(err);
         }
     }
     throw new Error(`Failed to download ${url} too many times.`);
 }
+
+function findKey(obj, key, path = []) {
+    if (obj && typeof obj === 'object') {
+        if (key in obj) {
+            return [...path, key];
+        }
+        for (const k in obj) {
+            const result = findKey(obj[k], key, [...path, k]);
+            if (result) {
+                return result;
+            }
+        }
+    }
+    return false;
+}
+
+function logObjectStructure(obj, indent = 0, depth = Infinity) {
+    const keys = Object.keys(obj);
+    keys.forEach((key) => {
+        console.log(`${'  '.repeat(indent)}${key}`);
+        if (typeof obj[key] === 'object' && obj[key] !== null && indent < depth) {
+            logObjectStructure(obj[key], indent + 1, depth);
+        }
+    });
+}
+
+
 
 class Client {
     gql_url = "https://poe.com/api/gql_POST";
@@ -241,200 +316,183 @@ class Client {
     settings_url = "https://poe.com/api/settings";
 
     formkey = "";
+    token = "";
     next_data = {};
     bots = {};
     active_messages = {};
     message_queues = {};
+    suggested_replies = {};
+    suggested_replies_updated = {};
     bot_names = [];
     ws = null;
     ws_connected = false;
     auto_reconnect = false;
     use_cached_bots = false;
+    device_id = null;
 
     constructor(auto_reconnect = false, use_cached_bots = false) {
         this.auto_reconnect = auto_reconnect;
         this.use_cached_bots = use_cached_bots;
-        // console.log("constructor.")
-    // const files = fs.readdirSync(__dirname+"\\nexdata.json");
-
-
     }
 
-    async  init( token, proxy = null,  bot = null, fast, body = null ) {
+    async reconnect() {
+        if (!this.ws_connected) {
+            console.log("WebSocket died. Reconnecting...");
+            this.disconnect_ws();
+            await this.init(this.token, this.proxy);
+        }
+    }
 
-        // console.log("init.");
-        let bodyResp = {}
+    async init(token, proxy = null) {
+        this.token = token;
         this.proxy = proxy;
-
         this.session = axios.default.create({
             timeout: 60000,
             httpAgent: new http.Agent({ keepAlive: true }),
             httpsAgent: new https.Agent({ keepAlive: true }),
         });
-
         if (proxy) {
-
             this.session.defaults.proxy = {
                 "http": proxy,
                 "https": proxy,
             };
-            // logger.info(`Proxy enabled: ${proxy}`);
-        
+            logger.info(`Proxy enabled: ${proxy}`);
         }
-        
         const cookies = `p-b=${token}; Domain=poe.com`;
-        
         this.headers = {
             "User-Agent": user_agent,
             "Referrer": "https://poe.com/",
             "Origin": "https://poe.com",
             "Cookie": cookies,
         };
-
-
-        // console.log("config.")
         this.session.defaults.headers.common = this.headers;
-        
-        if(body != null){
-            // console.log("[NEX DATA RECYCLING]")
-            // console.log(body)
-            let dataTem = (await this.get_next_data(body.next_data));
-            this.next_data = dataTem.nextData; 
-            this.channel = body.channel
-            this.bots = body.bots
-
-
-
-        }else{
-
-            let dataTem = (await this.get_next_data());
-
-            this.next_data = dataTem.nextData;
-            bodyResp.next_data = dataTem.r
-
-                    
-            // console.log("next_data")
-            this.channel = await this.get_channel_data();
-            bodyResp.channel = this.channel
-
-            // console.log(this.channel)
-            // console.log("channel")
-
-            this.bots = bot != null? bot : fast !=null? await this.get_bots(fast): await this.get_bots();
-            bodyResp.bots = this.bots
-
-
-        }
-
-
-
-        // console.log("get_bots")
+        [this.next_data, this.channel] = await Promise.all([this.get_next_data(), this.get_channel_data()]);
+        this.bots = await this.get_bots();
         this.bot_names = this.get_bot_names();
-        // console.log("get_bot_names")
-        this.ws_domain = `tch${Math.floor(Math.random() * 1e6)}`;
         this.gql_headers = {
             "poe-formkey": this.formkey,
             "poe-tchannel": this.channel["channel"],
             ...this.headers,
         };
-        // console.log("ws_domain")
-        await this.connect_ws();
-        // console.log("connect_ws")
-        await this.subscribe();
-        // console.log("subscribe")
-
-        if(body == null){
-            // console.log("[GET NEX DATA]")
+        if (this.device_id === null) {
+            this.device_id = this.get_device_id();
         }
-        return bodyResp
+        await this.subscribe();
+        await this.connect_ws();
+        console.log('Client initialized.');
     }
 
-    async get_next_data(next_data = null) {
-        // logger.info('Downloading next_data...');
-        // console.log(this.home_url)
-        var r = null;
-        if(next_data == null){
-         r = await request_with_retries(() => this.session.get(this.home_url));
-        }else{
-         r = next_data;
-        }
-  
-        
+    get_device_id() {
+        const user_id = this.viewer["poeUser"]["id"];
+        const device_id = getSavedDeviceId(user_id);
+        return device_id;
+    }
+
+    async get_next_data() {
+        logger.info('Downloading next_data...');
+
+        //these keys are used as of June 29, 2023
+        //if API changes in the future, just change these to find the new path
+        const viewerKeyName = 'viewer'
+        const botNameKeyName = 'chatOfBotHandle'
+        const defaultBotKeyName = 'defaultBotNickname'
+
+        const r = await request_with_retries(() => this.session.get(this.home_url));
         const jsonRegex = /<script id="__NEXT_DATA__" type="application\/json">(.+?)<\/script>/;
         const jsonText = jsonRegex.exec(r.data)[1];
         const nextData = JSON.parse(jsonText);
 
-        // console.log(nextData)
+        const viewerPath = findKey(nextData, viewerKeyName);
+        const botNamePath = findKey(nextData, botNameKeyName);
+        const defaultBotPath = findKey(nextData, defaultBotKeyName);
+
+
+
+        let viewer = null;
+        if (viewerPath) {
+            viewer = _.get(nextData, viewerPath.join('.'));
+        }
+
+        //if the API changes, these reports will tell us how it changed
+        if (viewerPath) {
+            console.log(`'${viewerKeyName}' key: ${viewerPath.join('.')}`);
+        } else {
+            console.log(`ERROR: '${viewerKeyName}' key not found.`);
+            //console.log(logObjectStructure(nextData, 0, 2));
+        }
+        if (botNamePath) {
+            console.log(`'${botNameKeyName}' key: ${botNamePath.join('.')}`);
+        } else {
+            console.log(`ERROR: '${botNameKeyName}' key not found.`);
+            //console.log(logObjectStructure(nextData, 0, 2));
+        }
+
+        if (defaultBotPath) {
+            console.log(`'${defaultBotKeyName}' key: ${defaultBotPath.join('.')}`);
+        } else {
+            console.log(`ERROR: '${defaultBotKeyName}' key not found.`);
+
+        }
+
+        if (!viewerPath || !botNamePath || !defaultBotPath) {
+            console.log('-----------------')
+            console.log("ERROR READING POE API! THIS IS THE RESPONSE STRUCTURE:")
+            console.log("SEARCH THIS LIST FOR 'chatOfBotDisplayName', 'viewer', AND 'defaultBotNickname'...")
+            console.log("-----------------")
+            console.log(logObjectStructure(nextData, 0, 4));
+            console.log("-----------------")
+        }
 
         this.formkey = extractFormKey(r.data);
-        // this.viewer = nextData.props.pageProps.payload.viewer;
+        this.viewer = viewer;
 
-        return {
-            nextData: nextData,
-            r: r
-        };
+        //old hard coded message no longer needed
+        //this.viewer = nextData.props.pageProps.payload?.viewer || nextData.props.pageProps.data?.viewer;
 
-
-
- 
-
+        return nextData;
     }
 
-    async get_bots( fast = null) {
-        // const viewer = this.next_data.props.pageProps.payload.viewer;
-
-        // // console.log(viewer.availableBotsConnection)
-        // if (!viewer.availableBotsConnection) {
-        //     throw new Error('Invalid token.');
-        // }
-        // const botList = this.viewer.availableBots;
-
-        // console.log(fast)
-
-        let BotsNames = {
-            "capybara":"Sage",
-            "beaver":"GPT-4",
-            "a2_2":"Claude+",
-            "a2_100k":"Claude-instant-100k",
-            "a2":"Claude-instant",
-            "chinchilla":"ChatGPT",
-            "hutia":"NeevaAI",
-            "nutria":"Dragonfly",
-        } 
-      
-        let botFilter = null;
-        if(fast != null){
-            botFilter = BotsNames[fast];
+    async get_bots() {
+        const viewer = this.viewer;
+        if (!viewer.availableBotsConnection) {
+            throw new Error('Invalid token.');
         }
-        
+        const botList = viewer.availableBotsConnection.edges.map(x => x.node);
+        const retries = 2;
         const bots = {};
-        for (let i= 1; i<2; i++) {
+        const promises = [];
+        for (const bot of botList.filter(x => x.deletionState == 'not_deleted')) {
+            const promise = new Promise(async (resolve, reject) => {
+                try {
+                    const url = `https://poe.com/_next/data/${this.next_data.buildId}/${bot.displayName}.json`;
+                    let r;
 
-            const url = `https://poe.com/_next/data/${this.next_data.buildId}/${botFilter==null?fast:botFilter}.json`;
-            let r;
+                    if (this.use_cached_bots && cached_bots[url]) {
+                        r = cached_bots[url];
+                    }
+                    else {
+                        logger.info(`Downloading ${bot.displayName}`);
+                        r = await request_with_retries(() => this.session.get(url), retries);
+                        cached_bots[url] = r;
+                    }
 
-            if (this.use_cached_bots && cached_bots[url]) {
-                r = cached_bots[url];
-            }
-            else {
-                // logger.info(`Downloading ${url}`);
-                r = await request_with_retries(() => this.session.get(url));
-                cached_bots[url] = r;
-            }
+                    const chatData = r.data.pageProps.payload?.chatOfBotDisplayName || r.data.pageProps.data?.chatOfBotHandle;
+                    bots[chatData.defaultBotObject.nickname] = chatData;
+                    resolve();
 
-            // console.log( r.data.pageProps )
-            const chatData = r.data.pageProps.data.chatOfBotDisplayName;
-            bots[chatData.defaultBotObject.nickname] = chatData;
+                }
+                catch {
+                    console.log(`Could not load bot: ${bot.displayName}`);
+                    reject();
+                }
+            });
 
-            if(fast != null) break
-            
+            promises.push(promise);
         }
 
-        // console.log(bots);
-
+        await Promise.allSettled(promises);
         return bots;
     }
-      
 
     get_bot_names() {
         const botNames = {};
@@ -446,14 +504,10 @@ class Client {
     }
 
     async get_channel_data(channel = null) {
-        // logger.info('Downloading channel data...');
-
-        // console.log(this.settings_url)
+        logger.info('Downloading channel data...');
         const r = await request_with_retries(() => this.session.get(this.settings_url));
         const data = r.data;
 
-
-        // console.log(data)
         return data.tchannelData;
     }
 
@@ -466,11 +520,6 @@ class Client {
     }
 
     async send_query(queryName, variables, queryDisplayName) {
-
-        if(BotsNamesColeb[variables.bot]!=null){
-            variables.bot = BotsNamesColeb[variables.bot]
-        }
-        // console.log()
         for (let i = 0; i < 20; i++) {
             const payload = generate_payload(queryName, variables);
             if (queryDisplayName) payload['queryName'] = queryDisplayName;
@@ -479,9 +528,9 @@ class Client {
             _headers['poe-tag-id'] = md5()(scramblePayload + this.formkey + "WpuLMiXEKKE98j56k");
             _headers['poe-formkey'] = this.formkey;
             const r = await request_with_retries(() => this.session.post(this.gql_url, payload, { headers: this.gql_headers }));
-            if (!r.data.data) {
-                logger.warn(`${queryName} returned an error: ${data.errors[0].message} | Retrying (${i + 1}/20)`);
-                await new Promise((resolve) => setTimeout(resolve, 2000));
+            if (!(r?.data?.data)) {
+                logger.warn(`${queryName} returned an error | Retrying (${i + 1}/20)`);
+                await delay(2000);
                 continue;
             }
 
@@ -489,11 +538,33 @@ class Client {
         }
 
         throw new Error(`${queryName} failed too many times.`);
+    }
 
+    async ws_ping() {
+        const pongPromise = new Promise((resolve) => {
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.ping();
+            }
+            this.ws.once('pong', () => {
+                resolve('ok');
+            });
+        });
+
+        const timeoutPromise = new Promise((resolve) => setTimeout(() => resolve('timeout'), 5000));
+        const result = await Promise.race([pongPromise, timeoutPromise]);
+
+        if (result == 'ok') {
+            return true;
+        }
+        else {
+            logger.warn('Websocket ping timed out.');
+            this.ws_connected = false;
+            return false;
+        }
     }
 
     async subscribe() {
-        // logger.info("Subscribing to mutations")
+        logger.info("Subscribing to mutations")
         await this.send_query("SubscriptionsMutation", {
             "subscriptions": [
                 {
@@ -510,7 +581,7 @@ class Client {
                 },
             ]
         },
-        'subscriptionsMutation');
+            'subscriptionsMutation');
     }
 
     ws_run_thread() {
@@ -539,10 +610,11 @@ class Client {
     }
 
     async connect_ws() {
+        this.ws_domain = `tch${Math.floor(Math.random() * 1e6)}`;
         this.ws_connected = false;
         this.ws_run_thread();
         while (!this.ws_connected) {
-            await new Promise(resolve => setTimeout(() => { resolve() }, 10));
+            await delay(10);
         }
     }
 
@@ -559,17 +631,15 @@ class Client {
 
     on_ws_error(ws, error) {
         logger.warn(`Websocket returned error: ${error}`);
-        
         this.disconnect_ws();
-
-        if (this.auto_reconnect) {
-            this.connect_ws();
-        }
     }
 
     async on_message(ws, msg) {
         try {
             const data = JSON.parse(msg);
+
+            // Uncomment to debug websocket messages
+            //console.log(data);
 
             if (!('messages' in data)) {
                 return;
@@ -586,6 +656,11 @@ class Client {
 
                 if (!message) {
                     return;
+                }
+
+                if ("suggestedReplies" in message && Array.isArray(message["suggestedReplies"])) {
+                    this.suggested_replies[message["messageId"]] = [...message["suggestedReplies"]];
+                    this.suggested_replies_updated[message["messageId"]] = Date.now();
                 }
 
                 const copiedDict = Object.assign({}, this.active_messages);
@@ -605,51 +680,49 @@ class Client {
             }
         }
         catch (err) {
-            // console.log('Error occurred in onMessage', err);
+            console.log('Error occurred in onMessage', err);
             this.disconnect_ws();
             await this.connect_ws();
         }
     }
 
-    async *send_message(chatbot, message, with_chat_break = false, timeout = 20) {
+    async *send_message(chatbot, message, with_chat_break = false, timeout = 60, signal = null) {
+        await this.ws_ping();
 
-        console.log("[...]")
-        //if there is another active message, wait until it has finished sending
-        while (Object.values(this.active_messages).includes(null)) {
-            await new Promise(resolve => setTimeout(resolve, 10));
+        if (this.auto_reconnect) {
+            await this.reconnect();
         }
 
+        //if there is another active message, wait until it has finished sending
+        while (Object.values(this.active_messages).includes(null)) {
+            await delay(10);
+        }
+
+        //null indicates that a message is still in progress
         this.active_messages["pending"] = null;
 
-        // console.log(chatbot)
-        // console.log( this.bots)
+        console.log(`Sending message to ${chatbot}: ${message}`);
 
-        const firstKey = Object.keys(this.bots)[0];
-        const firstValue = this.bots[firstKey]; 
-
-        // console.log(firstKey)
-        // console.log(firstValue["chatId"])
-
-        const messageData = await this.send_query("AddHumanMessageMutation", {
+        const messageData = await this.send_query("SendMessageMutation", {
             "bot": chatbot,
             "query": message,
-            "chatId": firstValue["chatId"],
+            "chatId": this.bots[chatbot]["chatId"],
             "source": null,
+            "clientNonce": generateNonce(),
+            "sdid": this.device_id,
             "withChatBreak": with_chat_break
         });
 
         delete this.active_messages["pending"];
 
-        // console.log( this.bots )
-
-        if (!messageData["data"]["messageCreateWithStatus"]["messageLimit"]["canSend"]) {
+        if (!messageData["data"]["messageEdgeCreate"]["message"]) {
             throw new Error(`Daily limit reached for ${chatbot}.`);
         }
 
         let humanMessageId;
         try {
-            const humanMessage = messageData["data"]["messageCreateWithStatus"];
-            humanMessageId = humanMessage["message"]["messageId"];
+            const humanMessage = messageData["data"]["messageEdgeCreate"]["message"];
+            humanMessageId = humanMessage["node"]["messageId"];
         } catch (error) {
             throw new Error(`An unknown error occured. Raw response data: ${messageData}`);
         }
@@ -662,9 +735,18 @@ class Client {
         let messageId;
         while (true) {
             try {
+                if (signal instanceof AbortSignal) {
+                    signal.throwIfAborted();
+                }
+
+                if (timeout <= 0) {
+                    throw new Error("Response timed out.");
+                }
+
                 const message = this.message_queues[humanMessageId].shift();
                 if (!message) {
-                    await new Promise(resolve => setTimeout(() => resolve(), 1000));
+                    timeout -= 0.1;
+                    await delay(100);
                     continue;
                     //throw new Error("Queue is empty");
                 }
@@ -696,7 +778,7 @@ class Client {
     }
 
     async send_chat_break(chatbot) {
-        // logger.info(`Sending chat break to ${chatbot}`);
+        logger.info(`Sending chat break to ${chatbot}`);
         const result = await this.send_query("AddMessageBreakMutation", {
             "chatId": this.bots[chatbot]["chatId"]
         });
@@ -704,19 +786,17 @@ class Client {
     }
 
     async get_message_history(chatbot, count = 25, cursor = null) {
-
-        // console.log(this.bots)
+        logger.info(`Downloading ${count} messages from ${chatbot}`);
         const result = await this.send_query("ChatListPaginationQuery", {
             "count": count,
             "cursor": cursor,
-            "id": this.bots[chatbot.toLowerCase()]["id"]
+            "id": this.bots[chatbot]["id"]
         });
-
         return result["data"]["node"]["messagesConnection"]["edges"];
     }
 
     async delete_message(message_ids) {
-        // logger.info(`Deleting messages: ${message_ids}`);
+        logger.info(`Deleting messages: ${message_ids}`);
         if (!Array.isArray(message_ids)) {
             message_ids = [parseInt(message_ids)];
         }
@@ -726,7 +806,7 @@ class Client {
     }
 
     async purge_conversation(chatbot, count = -1) {
-        // logger.info(`Purging messages from ${chatbot}`);
+        logger.info(`Purging messages from ${chatbot}`);
         let last_messages = (await this.get_message_history(chatbot, 50)).reverse();
         while (last_messages.length) {
             const message_ids = [];
@@ -745,32 +825,10 @@ class Client {
             }
             last_messages = (await this.get_message_history(chatbot, 50)).reverse();
         }
-        // logger.info("No more messages left to delete.");
+        logger.info("No more messages left to delete.");
     }
 }
 
 load_queries();
 
-module.exports = { Client };    
-
-
-// (async ()=>{
-//     // console.log("Hola")
-
-//     let bot = "a2";
-//         console.log("[CLIENT_CONECTED]")
-//     let token = "7wI28WkgKYcH5F4L7R5rNA%3D%3D"
-
-//     var clientPoe = new Client();
-//     await clientPoe.init(token,null,null, bot);
-
-
-//     let reply;
-//     for await (const mes of clientPoe.send_message(bot, "Hola")) {
-//         reply = mes.text.trim()
-//     }
-
-
-//     console.log("[RESPONSE]: "+reply)
-
-// })()
+module.exports = { Client };
